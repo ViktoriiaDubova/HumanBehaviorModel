@@ -7,6 +7,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 15px;
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
@@ -17,8 +18,10 @@
 }
 
 /* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
 textarea {
-    max-width: 280px;
+    max-width: 500px;
+}
+input,
+select {
+    max-width: 300px;
 }
