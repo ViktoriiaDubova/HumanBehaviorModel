@@ -1,0 +1,18 @@
+﻿<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"></button>
+        @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <div id="navbarSupportedContent" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav mr-auto">
+                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Articles", "Index", "Article", null, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
+            </ul>
+            <ul class="nav navbar-nav mr-auto float-right">
+                <li class="nav-item">@Html.ActionLink("Login", "Login", "User", null, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Register", "Register", "User", null, new { @class = "nav-link" })</li>
+            </ul>
+        </div>
+    </div>
+</nav>

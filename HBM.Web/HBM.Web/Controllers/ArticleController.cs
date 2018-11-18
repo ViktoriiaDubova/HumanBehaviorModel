@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using HBM.Web.Contexts;
 using HBM.Web.ViewModels;
@@ -12,8 +13,8 @@ namespace HBM.Web.Controllers
         // GET: Article
         public ActionResult Index()
         {
-            
-            return View();
+            var articles = db.Articles.ToList();
+            return View(articles);
         }
         //Get: Create
         public ActionResult Create()
@@ -27,12 +28,14 @@ namespace HBM.Web.Controllers
         }
         
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(ArticleCreateViewModel viewModel)
         {
             throw new NotImplementedException();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(ArticleEditViewModel viewModel)
         {
             throw new NotImplementedException();

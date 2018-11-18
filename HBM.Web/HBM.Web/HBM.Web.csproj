@@ -135,9 +135,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="Migrations\201811181452124_Initial.cs" />
     <Compile Include="Migrations\201811181452124_Initial.Designer.cs">
       <DependentUpon>201811181452124_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811181535506_AddUserConfirmationField.cs" />
+    <Compile Include="Migrations\201811181535506_AddUserConfirmationField.Designer.cs">
+      <DependentUpon>201811181535506_AddUserConfirmationField.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -148,6 +153,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ArticleCreateViewModel.cs" />
     <Compile Include="ViewModels\ArticleEditViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\RegisterViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\MainData.mdf" />
@@ -231,10 +238,14 @@
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Article\Index.cshtml" />
+    <Content Include="Views\Article\Create.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
-    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -250,6 +261,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201811181452124_Initial.resx">
       <DependentUpon>201811181452124_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811181535506_AddUserConfirmationField.resx">
+      <DependentUpon>201811181535506_AddUserConfirmationField.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

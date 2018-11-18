@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Principal;
 
 namespace HBM.Web.Models
 {
@@ -19,6 +20,8 @@ namespace HBM.Web.Models
         [Index("IX_UserIdent", Order = 2, IsUnique = true)]
         public string Email { get; set; }
 
+        [Required]
+        public bool IsEmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
 
         [ForeignKey("Avatar")]

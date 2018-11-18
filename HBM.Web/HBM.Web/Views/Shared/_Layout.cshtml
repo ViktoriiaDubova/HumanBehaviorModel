@@ -3,30 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"></button>
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <div id="navbarSupportedContent" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav mr-auto">
-                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", htmlAttributes: new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Articles", "Index", "Article", htmlAttributes: new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", htmlAttributes: new { @class = "nav-link" })</li>
-                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", htmlAttributes: new { @class = "nav-link" })</li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    @Html.Partial("_NavBar")
     <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - HBM</p>
         </footer>
     </div>
 
