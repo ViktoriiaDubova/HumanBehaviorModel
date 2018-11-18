@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HBM.Web.Models
 {
@@ -6,5 +7,10 @@ namespace HBM.Web.Models
     {
         [Key]
         public int Id { get; set; }
+        [StringLength(512, MinimumLength = 8)]
+        public string Text { get; set; }
+
+        public virtual Article Article { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

@@ -12,6 +12,7 @@ namespace HBM.Web.Controllers
         // GET: Article
         public ActionResult Index()
         {
+            
             return View();
         }
         //Get: Create
