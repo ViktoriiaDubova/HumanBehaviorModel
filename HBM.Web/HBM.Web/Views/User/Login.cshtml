@@ -4,7 +4,7 @@
 }
 
 <div class="text-center">
-    @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal form-signin", id = "loginForm", role = "form" }))
+    @using (Html.BeginForm("Login", "User", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal form-center", id = "loginForm", role = "form" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)

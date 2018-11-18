@@ -12,5 +12,10 @@ namespace HBM.Web.Contexts
         {
 
         }
+
+        public static UserDbContext Create()
+        {
+            return new UserDbContext();
+        }
     }
 }

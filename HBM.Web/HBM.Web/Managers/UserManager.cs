@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using HBM.Web.Contexts;
 using HBM.Web.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
 
 namespace HBM.Web.Managers
 {
@@ -17,54 +23,127 @@ namespace HBM.Web.Managers
         UnknownError = 4
     }
 
-    public class UserManager : IDisposable
+    public class ApplicationUserManager : UserManager<ApplicationUser>, IDisposable
     {
-        private static UserManager instance;
-        public static UserManager Instance => instance ?? (instance = new UserManager());
+        private ApplicationUserStore UserStore { get; }
 
-        private UserDbContext dbContext;
-
-        private UserManager ()
+        private ApplicationUserManager (ApplicationUserStore store) : base(store)
         {
-            dbContext = new UserDbContext();
+            PasswordHasher = new InternalPasswordHasher();
+            UserStore = store;
         }
         
         public async Task<UserCreationResult> CreateUser(string username, string email, string password)
         {
-            if (dbContext.Users.Any(u => u.Username == username))
+            if (await UserStore.FindByNameAsync(username) != null)
                 return UserCreationResult.UsernameDuplicate;
-            if (dbContext.Users.Any(u => u.Email == email))
+            if (await UserStore.FindByEmailAsync(email) != null)
                 return UserCreationResult.UserEmailDuplicate;
 
             ApplicationUser user = new ApplicationUser()
             {
-                Username = username, Email = email,
+                UserName = username, Email = email,
                 IsEmailConfirmed = false, 
-                PasswordHash = HashPassword(password)
+                PasswordHash =  PasswordHasher.HashPassword(password)
             };
-            dbContext.Users.Add(user);
-            int result = 0;
+            int result = 1;
             try
             {
-                result = await dbContext.SaveChangesAsync();
+                await UserStore.CreateAsync(user);
             }
-            catch { }
+            catch { result = 0; }
             if (result == 0)
                 return UserCreationResult.UnknownError;
             return UserCreationResult.Created;
         }
-
-        public void Dispose()
+       
+        public override async Task<ApplicationUser> FindAsync(string userName, string password)
         {
-            dbContext.Dispose();
+            var user = await UserStore.FindByNameAsync(userName);
+            var result = PasswordHasher.VerifyHashedPassword(user.PasswordHash, password);
+            if (result == PasswordVerificationResult.Success)
+                return user;
+            return null;
         }
 
-        private bool VerifyPassword(string password, string hash)
+        public async Task<ApplicationUser> FindByNameOrEmailAsync(string userIdent, string password)
         {
-            string phash = HashPassword(password);
-            return password == phash;
+            var user = await UserStore.FindByUsernameOrEmailAsync(userIdent);
+            var result = PasswordHasher.VerifyHashedPassword(user.PasswordHash, password);
+            if (result == PasswordVerificationResult.Success)
+                return user;
+            return null;
         }
-        private string HashPassword(string password)
+
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
+        {
+            var manager = new ApplicationUserManager(new ApplicationUserStore(context.Get<UserDbContext>()));
+            // Configure validation logic for usernames
+            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+                RequireUniqueEmail = true
+            };
+
+            // Configure validation logic for passwords
+            manager.PasswordValidator = new PasswordValidator
+            {
+                RequiredLength = 4,
+                //RequireNonLetterOrDigit = true,
+                //RequireDigit = true,
+                //RequireLowercase = true,
+                //RequireUppercase = true,
+            };
+
+            // Configure user lockout defaults
+            manager.UserLockoutEnabledByDefault = true;
+            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+
+            //manager.EmailService = new EmailService();
+            var dataProtectionProvider = options.DataProtectionProvider;
+            if (dataProtectionProvider != null)
+            {
+                manager.UserTokenProvider =
+                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+            }
+            return manager;
+        }
+
+    }
+    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
+    {
+        public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)
+            : base(userManager, authenticationManager)
+        {
+        }
+
+        public async Task<SignInStatus> PasswordSignInAsync(ApplicationUserManager userManager, string userIdent, string password, bool persistent, bool shouldLockout)
+        {
+            var user = await userManager.FindByNameOrEmailAsync(userIdent, password);
+            if (user == null)
+                return SignInStatus.Failure;
+            if (!user.IsEmailConfirmed)
+                return SignInStatus.RequiresVerification;
+            return await PasswordSignInAsync(user.UserName, password, persistent, shouldLockout);
+        }
+
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
+        {
+            throw new NotImplementedException();
+            //return (ApplicationUserManager)UserManager.CreateIdentityAsync(user, string.Empty);
+            //return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
+        }
+
+        public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
+        {
+            return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    internal class InternalPasswordHasher : PasswordHasher
+    {
+        public override string HashPassword(string password)
         {
             byte[] hashData = null;
             using (MD5 md5 = MD5.Create())
@@ -77,6 +156,12 @@ namespace HBM.Web.Managers
                 returnValue.Append(hashData[i].ToString());
             }
             return returnValue.ToString();
-        }       
+        }
+
+        public override PasswordVerificationResult VerifyHashedPassword(string hashedPassword, string providedPassword)
+        {
+            string phash = HashPassword(providedPassword);
+            return hashedPassword == phash ? PasswordVerificationResult.Success : PasswordVerificationResult.Failed;
+        }
     }
 }

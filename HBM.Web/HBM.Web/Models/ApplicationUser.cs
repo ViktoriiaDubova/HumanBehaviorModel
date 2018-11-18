@@ -1,19 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNet.Identity;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Security.Principal;
 
 namespace HBM.Web.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IUser
     {
         [Key]
         public int Id { get; set; }
+        string IUser<string>.Id => Id.ToString();
 
         [Column(TypeName = "VARCHAR")]
         [StringLength(32, MinimumLength = 3)]
         [Required, Index("IX_UserIdent", Order = 1, IsUnique = true)]
-        public string Username { get; set; }
-
+        public string UserName { get; set; }
         [EmailAddress, Required]
         [Column(TypeName = "VARCHAR")]
         [StringLength(32, MinimumLength = 3)]
@@ -23,6 +23,7 @@ namespace HBM.Web.Models
         [Required]
         public bool IsEmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
+        public string SecurityStamp { get; set; }
 
         [ForeignKey("Avatar")]
         public int? ImageId { get; set; }
