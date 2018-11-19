@@ -39,6 +39,7 @@ namespace HBM.Web.Controllers
         }
 
         // GET: User
+        [Authorize]
         public ActionResult Index()
         {
             return HttpNotFound();
@@ -51,6 +52,15 @@ namespace HBM.Web.Controllers
         public ActionResult Register()
         {
             return View();
+        }
+        [Authorize]
+        public ActionResult SignOut()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                AuthenticationManager.SignOut();
+            }
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]

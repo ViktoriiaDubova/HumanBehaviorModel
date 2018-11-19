@@ -1,7 +1,50 @@
-﻿
+﻿@using HBM.Web.Models
+@model IEnumerable<Article>
 @{
     ViewBag.Title = "Articles";
 }
 
-<h2>Articles</h2>
+@{
+    if (User.Identity.IsAuthenticated)
+    {
+        <p>@Html.ActionLink("Create new", "Create", "Article", null, new { @class = "btn btn-primary btn-lg" })</p>
+    }
+}
 
+<div class="row">
+    @{
+        <div class="col-md-8">
+            @foreach (var article in Model)
+            {
+                <article class="post">
+                    <div class="post-thumb">
+                        <a href="@Url.Action("Show", new { id=article.Id })">
+                            @{
+                                var img = article.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
+                            }
+                            <img class="img-preview" src="@img" alt="">
+                        </a>
+                        <a href="@Url.Action("Show", new { id=article.Id })" class="post-thumb-overlay text-center">
+                            <div class="text-uppercase text-center">View Post</div>
+                        </a>
+                    </div>
+                    <div class="post-content">
+                        <header class="entry-header text-center text-uppercase">@article.Header</header>
+                        <div class="entry-content">
+                            @article.Description
+                        </div>
+                        <div class="text-center text-uppercase">
+                            @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "more-link" })
+                        </div>
+                    </div>
+                    <div class="social-share">
+                        <span class="social-share-title float-left text-capitalize">
+                            By <b>@article.User.UserName</b> on 19-Nov-18
+                        </span>
+                        <ul class="text-center float-right"></ul>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</div>

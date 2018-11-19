@@ -14,7 +14,7 @@ namespace HBM.Web.Migrations
                         Id = c.Int(nullable: false, identity: true),
                         Header = c.String(maxLength: 64),
                         Description = c.String(maxLength: 256),
-                        Text = c.String(),
+                        Content = c.String(),
                         UserId = c.Int(nullable: false),
                         ImageId = c.Int(),
                     })

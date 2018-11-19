@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Web.Mvc;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,10 +11,12 @@ namespace HBM.Web.Models
         public int Id { get; set; }
         [StringLength(64, MinimumLength = 8)]
         public string Header { get; set; }
+        [AllowHtml]
         [StringLength(256, MinimumLength = 24)]
         public string Description { get; set; }
+        [AllowHtml]
         [StringLength(6000, MinimumLength = 64)]
-        public string Text { get; set; }
+        public string Content { get; set; }
         [ForeignKey("User")]
         public int UserId { get; set; }
         [ForeignKey("Image")]
