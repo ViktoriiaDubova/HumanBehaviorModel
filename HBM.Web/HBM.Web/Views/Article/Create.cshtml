@@ -4,12 +4,18 @@
 }
 
 <div class="">
-    @using (Html.BeginForm("Create", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form" }))
+    @using (Html.BeginForm("Create", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form", enctype="multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
         <h4 class="h3 mb-3 font-weight-normal">New article</h4>
         <hr />
+
+        @Html.LabelFor(m => m.ImageFile, "Image")
+        <div>
+            <input type="file" name="ImageFile" class="form-control"/>
+            @Html.ValidationMessageFor(m => m.ImageFile, "", new { @class = "text-danger" })
+        </div>
 
         @Html.LabelFor(m => m.Header)
         <div>

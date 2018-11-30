@@ -5,7 +5,7 @@
 
 <div class="">
 
-    @using (Html.BeginForm("Edit", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form" }))
+    @using (Html.BeginForm("Edit", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form", enctype = "multipart/form-data" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
@@ -14,6 +14,18 @@
         <hr />
         <div class="text-right">
             @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
+        </div>
+
+        
+        var img = Model.ImageUrl ?? "~/Content/img/no-image.png";
+        img = Url.Content(img);        
+        <img class="img-preview col-md-3" src="@img" alt="">
+        <br/>
+
+        @Html.LabelFor(m => m.ImageFile, "New image")
+        <div class="mb-4">
+            <input type="file" name="ImageFile" class="form-control" />
+            @Html.ValidationMessageFor(m => m.ImageFile, "", new { @class = "text-danger" })
         </div>
 
         @Html.LabelFor(m => m.Header)

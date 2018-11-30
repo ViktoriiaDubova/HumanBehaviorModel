@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace HBM.Web.ViewModels
 {
@@ -15,5 +16,9 @@ namespace HBM.Web.ViewModels
         public string Content { get; set; }
         [StringLength(64)]
         public string Tags { get; set; }
+        public string ImageUrl { get; set; }
+
+        [DataType(DataType.Upload)]
+        public HttpPostedFileBase ImageFile { get; set; }
     }
 }

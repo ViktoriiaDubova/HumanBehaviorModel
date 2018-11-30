@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/HBM.Web/HBM.Web/Images/Articles/183328975.jpg
+/HBM.Web/HBM.Web/Images/Articles/183246196.jpeg
+/HBM.Web/HBM.Web/Images/Articles/180241940.jpg

@@ -18,12 +18,13 @@
                             @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
                         </div>
                     }
-                    <div class="post-thumb col-md-6">
-                        @{
-                            var img = @Model.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
-                        }
-                        <img src="@img" alt="">
-                    </div>
+                        <div class="post-thumb col-md-6">
+                            @{
+                                var img = Model.Image?.Path ?? "~/Content/img/no-image.png";
+                                img = Url.Content(img);
+                            }
+                            <img class="img-preview" src="@img" alt="">
+                        </div>
                     <div class="post-content">
                         <header class="entry-header text-center text-uppercase">
                             <h1 class="entry-title">@Model.Header</h1>

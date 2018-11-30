@@ -172,6 +172,7 @@
     <Compile Include="Contexts\ArticleDbContext.cs" />
     <Compile Include="Contexts\UserDbContext.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Extensions\CollectionHelpers.cs" />
@@ -206,6 +207,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ArticleCreateViewModel.cs" />
     <Compile Include="ViewModels\ArticleEditViewModel.cs" />
+    <Compile Include="ViewModels\ImageUploadViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
     <Compile Include="ViewModels\TagsPageViewModel.cs" />
@@ -529,6 +531,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
+    <Folder Include="Images\Articles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

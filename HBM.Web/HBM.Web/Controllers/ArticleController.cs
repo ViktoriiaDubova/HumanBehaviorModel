@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -94,13 +95,16 @@ namespace HBM.Web.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var article = await db.Articles.FindAsync(id);
+            if (article == null)
+                return HttpNotFound("Article not found");
             var model = new ArticleEditViewModel()
             {
                 Id = article.Id,
                 Content = article.Content,
                 Description = article.Description,
                 Header = article.Header,
-                Tags = Tag.ToString(article.Tags)
+                Tags = Tag.ToString(article.Tags),
+                ImageUrl = article.Image?.Path
             };
             return View(model);
         }
@@ -115,6 +119,15 @@ namespace HBM.Web.Controllers
                 if (!ModelState.IsValid)
                     return View(model);
 
+                Image img = null;
+                if (model.ImageFile != null)
+                {
+                    string fileName = FileController.UploadFile(model.ImageFile, Server, "Images/Articles/");                    
+                    img = new Image() { Path = $"~/Images/Articles/{fileName}" };
+                    db.Images.Add(img);
+                    await db.SaveChangesAsync();
+                }
+
                 Article article = new Article()
                 {
                     Header = model.Header,
@@ -123,6 +136,9 @@ namespace HBM.Web.Controllers
                     UserId = int.Parse(User.Identity.GetUserId()),
                     DatePost = DateTime.UtcNow
                 };
+                if (img != null)
+                    article.ImageId = img.Id;
+
                 var tagKeys = tagCreationResults.Select(r => r.Value);
                 article.Tags = LoadTags(tagKeys).ToList();
                 db.Articles.Add(article);
@@ -156,6 +172,22 @@ namespace HBM.Web.Controllers
                     return View(model);
 
                 article.LoadFrom(model);
+
+                Image img = null;
+                if (model.ImageFile != null)
+                {
+                    if (article.ImageId != null)
+                        FileController.ReplaceFile(model.ImageFile, Server, article.Image.Path);                    
+                    else
+                    {
+                        string fileName = FileController.UploadFile(model.ImageFile, Server, "Images/Articles/");
+                        img = new Image() { Path = $"~/Images/Articles/{fileName}" };
+                        db.Images.Add(img);
+                        await db.SaveChangesAsync();
+                        article.ImageId = img.Id;
+                    }                    
+                }
+
                 var tagKeys = tagCreationResults.Select(r => r.Value);
                 article.Tags.Intersection(LoadTags(tagKeys).ToList(), (t1, t2) => t1.Key == t2.Key);
                 article.DateEdited = DateTime.UtcNow;
