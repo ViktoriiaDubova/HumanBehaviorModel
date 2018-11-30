@@ -36,7 +36,7 @@
                             @{
                                 foreach (var tag in Model.Tags)
                                 {
-                                    <a href="#" class="btn btn-outline-primary">@tag.Key</a>
+                                    <a href="@Url.Action("Tags", new { selected = tag.Id })" class="btn btn-outline-primary">@tag.Key</a>
                                 }
                             }
                         </div>

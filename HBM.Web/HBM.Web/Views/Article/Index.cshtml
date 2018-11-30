@@ -1,6 +1,7 @@
 ﻿@model PagedList.IPagedList<HBM.Web.Models.Article>
 @using PagedList.Mvc;
 @using Microsoft.AspNet.Identity;
+@using HBM.Web.Controllers;
 @{
     ViewBag.Title = "Articles";
 
@@ -9,69 +10,81 @@
     {
         <p>@Html.ActionLink("Create new", "Create", "Article", null, new { @class = "btn btn-primary btn-lg" })</p>
     }
+    var sortOrder = ViewBag.SortOrder;
+    string search = ViewBag.Search as string;
+    var list = new SelectList(ArticleController.Ordering, "Value", "Text", sortOrder);
 }
 
 <div class="row align-content-center">
-    @{
-        <div class="col-md-8">
-            @foreach (var article in Model)
-            {
-                <article class="post">
-                    <div class="post-thumb">
-                        <a href="@Url.Action("Show", new { id=article.Id })">
-                            @{
-                                var img = article.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
-                            }
-                            <img class="img-preview" src="@img" alt="">
-                        </a>
-                        <a href="@Url.Action("Show", new { id=article.Id })" class="post-thumb-overlay text-center">
-                            <div class="text-uppercase text-center">View Post</div>
-                        </a>
+@{
+    <div class="col-md-8">
+        @using (Html.BeginForm("Index", "Article", new { page = Model.PageNumber }, FormMethod.Get, new { @class = "form-inline mb-4", id = "sortForm", role = "form" }))
+        {
+            <input type="submit" value="Sort" class="form-control" />
+            @Html.DropDownList("sortOrder", list, new { @class = "form-control float-left mr-4" })
+
+            @Html.TextBox("search", search, new { @class = "form-control float-left" })
+            <input type="submit" value="Search" class="form-control" />
+        }
+
+        @foreach (var article in Model)
+        {
+            <article class="post">
+                <div class="post-thumb">
+                    <a href="@Url.Action("Show", new { id=article.Id })">
+                        @{
+                            var img = article.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
+                        }
+                        <img class="img-preview" src="@img" alt="">
+                    </a>
+                    <a href="@Url.Action("Show", new { id=article.Id })" class="post-thumb-overlay text-center">
+                        <div class="text-uppercase text-center">View Post</div>
+                    </a>
+                </div>
+                <div class="post-content">
+                    <header class="entry-header text-center text-uppercase">@article.Header</header>
+                    <div class="entry-content">
+                        @article.Description
                     </div>
-                    <div class="post-content">
-                        <header class="entry-header text-center text-uppercase">@article.Header</header>
-                        <div class="entry-content">
-                            @article.Description
-                        </div>
-                        <br/>
-                        <div class="text-center text-uppercase">
-                            @{
-                                if (userId == article.UserId)
-                                {
-                                    @Html.ActionLink("Edit", "Edit", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })
-                                }
-                                @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })                              
+                    <br />
+                    <div class="text-center text-uppercase">
+                        @{
+                            if (userId == article.UserId)
+                            {
+                                @Html.ActionLink("Edit", "Edit", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })
                             }
-                        </div>
-                        <div class="decoration">
-                            @{
-                                if (article.Tags != null && article.Tags.Count > 0)
-                                {
-                                    foreach (var tag in article.Tags)
-                                    {
-                                        <a href="#" class="btn btn-outline-primary">@tag.Key</a>
-                                    }
-                                }
-                            }
-                        </div>
+                            @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })
+                        }
                     </div>
-                    <div class="social-share">
-                        <span class="social-share-title float-left text-capitalize">
-                            Posted by <b>@article.User.UserName</b> on @article.DatePost
-                            @{
-                                if (article.DateEdited != null)
+                    <div class="decoration">
+                        @{
+                            if (article.Tags != null && article.Tags.Count > 0)
+                            {
+                                foreach (var tag in article.Tags)
                                 {
-                                    <br />
-                                    <span>Last edited on @article.DateEdited</span>
+                                    <a href="@Url.Action("Tags", new { selected = tag.Id })" class="btn btn-outline-primary">@tag.Key</a>
                                 }
                             }
-                        </span>                        
-                        <ul class="text-center float-right"></ul>
+                        }
                     </div>
-                </article>
-            }
-        </div>
-    }
+                </div>
+                <div class="social-share">
+                    <span class="social-share-title float-left text-capitalize">
+                        Posted by <b>@article.User.UserName</b> on @article.DatePost
+                        @{
+                            if (article.DateEdited != null)
+                            {
+                                <br />
+                                <span>Last edited on @article.DateEdited</span>
+                            }
+                        }
+                    </span>
+                    <ul class="text-center float-right"></ul>
+                </div>
+            </article>
+        }
+    </div>
+}
 </div>
 
 <br />

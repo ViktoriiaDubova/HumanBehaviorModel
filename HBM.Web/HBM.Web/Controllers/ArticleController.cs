@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using HBM.Web.Contexts;
@@ -16,17 +15,68 @@ namespace HBM.Web.Controllers
     [Authorize]
     public class ArticleController : Controller
     {
-        private int articlesPerPage = 3;
+        private int articlesPerPage = 6;
         private ArticleDbContext db = new ArticleDbContext();
 
-        // GET: Article
+        public static object[] Ordering = new[]{
+            new { Text = "by title", Value = "header"},
+            new { Text = "by title desc", Value = "header_desc"},
+            new { Text = "recent", Value = "date_desc" },
+            new { Text = "older", Value = "date" }
+        };
+
         [AllowAnonymous]
-        public ActionResult Index(int? page)
+        public ActionResult Index(string sortOrder, string search, int? page)
         {
+            ViewBag.SortOrder = sortOrder ?? "date_desc";
+            ViewBag.Search = search;
+
+            var articles = db.Articles.AsQueryable();
+            if (!string.IsNullOrEmpty(search))
+                articles = articles.Where(a => a.Header.Contains(search));
+            switch (sortOrder)
+            {
+                case "header":
+                    articles = articles.OrderBy(a => a.Header);
+                    break;
+                case "header_desc":
+                    articles = articles.OrderByDescending(a => a.Header);
+                    break;
+                case "date":
+                    articles = articles.OrderBy(a => a.DatePost);
+                    break;
+                case "date_desc":
+                default:
+                    articles = articles.OrderByDescending(a => a.DatePost);
+                    break;             
+            }
+            
             int pageNumber = (page ?? 1);
-            var list = db.Articles.ToList();
-            return View(list.ToPagedList(pageNumber, articlesPerPage));
+            var list = articles.ToList().ToPagedList(pageNumber, articlesPerPage);
+            return View(list);
         }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> Tags(int? selected, int? page)
+        {
+            IEnumerable<Article> articles = null;
+            if (selected != null)
+            {
+                var tag = await db.Tags.FindAsync(selected);
+                if (tag != null)
+                {
+                    articles = tag.Articles;
+                }
+            }
+            var model = new TagsPageViewModel()
+            {
+                Articles = articles?.ToList().ToPagedList(page ?? 1, articlesPerPage),
+                SelectedTag = selected ?? -1, Tags = db.Tags.ToList()
+            };
+
+            return View(model);
+        }
+
         [AllowAnonymous]
         public async Task<ActionResult> Show(int id)
         {

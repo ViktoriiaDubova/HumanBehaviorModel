@@ -208,6 +208,7 @@
     <Compile Include="ViewModels\ArticleEditViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\TagsPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\MainData.mdf" />
@@ -524,6 +525,7 @@
     <Content Include="Views\Shared\EditorTemplates\tinymce_full.cshtml" />
     <Content Include="Views\Article\Show.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
+    <Content Include="Views\Article\Tags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
