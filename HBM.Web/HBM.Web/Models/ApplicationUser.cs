@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,8 @@ namespace HBM.Web.Models
         [StringLength(32, MinimumLength = 3)]
         [Index("IX_UserIdent", Order = 2, IsUnique = true)]
         public string Email { get; set; }
+        [DataType(DataType.DateTime)]
+        public DateTime DateRegistered { get; set; }
 
         [Required]
         public bool IsEmailConfirmed { get; set; }

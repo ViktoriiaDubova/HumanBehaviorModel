@@ -1,0 +1,77 @@
+﻿@model HBM.Web.Models.Article
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Show";
+
+    int userId = User.Identity.IsAuthenticated ? int.Parse(User.Identity.GetUserId()) : -1;
+}
+
+<div class="main-content">
+    <div class="container align-content-center">
+        <div class="row" style="position: relative;">
+            <div class="">
+                <article class="post">
+                    @if (userId == Model.UserId)
+                    {
+                        <div class="text-right">
+                            @Html.ActionLink("Edit", "Edit", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
+                            @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
+                        </div>
+                    }
+                    <div class="post-thumb col-md-6">
+                        @{
+                            var img = @Model.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
+                        }
+                        <img src="@img" alt="">
+                    </div>
+                    <div class="post-content">
+                        <header class="entry-header text-center text-uppercase">
+                            <h1 class="entry-title">@Model.Header</h1>
+                        </header>
+                        <div class="entry-content para">
+                            @Html.Raw(@Model.Content)
+                        </div>
+
+                        <div class="decoration">
+                            @{
+                                foreach (var tag in Model.Tags)
+                                {
+                                    <a href="#" class="btn btn-outline-primary">@tag.Key</a>
+                                }
+                            }
+                        </div>
+
+                        <div class="social-share">
+                            <span class="social-share-title pull-left">
+                                Posted by <b><a href="#">@Model.User.UserName</a></b> on @Model.DatePost
+                                @{
+                                    if (Model.DateEdited != null)
+                                    {
+                                        <br />
+                                        <span>Last edited on @Model.DateEdited</span>
+                                    }
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </article>
+                @*<div class="bottom-comment">
+                        <div class="comment-img">
+                            <img class="img-circle" src="Article_files/6761ec444081a99b9e34c9c300064fb7.jpg" alt="" width="50">
+                        </div>
+                        <div class="comment-text">
+                            <h5><a href="https://cs302.000webhostapp.com/auth/view?id=1">Vardir</a></h5>
+                            <p class="comment-date">
+                                May 20, 2018
+                            </p>
+                            <p class="para">
+                                Єба, god of war)
+                            </p>
+                        </div>
+                    </div>*@
+
+
+            </div>
+        </div>
+    </div>
+</div>

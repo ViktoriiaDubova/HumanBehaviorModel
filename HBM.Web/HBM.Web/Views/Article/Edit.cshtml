@@ -1,25 +1,30 @@
-﻿@model HBM.Web.ViewModels.ArticleCreateViewModel
+﻿@model HBM.Web.ViewModels.ArticleEditViewModel
 @{
-    ViewBag.Title = "Create article";
+    ViewBag.Title = "Edit";
 }
 
 <div class="">
-    @using (Html.BeginForm("Create", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form" }))
+
+    @using (Html.BeginForm("Edit", "Article", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", id = "createForm", role = "form" }))
     {
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
-        <h4 class="h3 mb-3 font-weight-normal">New article</h4>
+        @Html.HiddenFor(m => m.Id)
+        <h4 class="h3 mb-3 font-weight-normal">Edit article</h4>
         <hr />
+        <div class="text-right">
+            @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
+        </div>
 
         @Html.LabelFor(m => m.Header)
         <div>
-            @Html.TextBoxFor(m => m.Header, new { @class = "form-control", placeholder = "Specify a title" })
+            @Html.TextBoxFor(m => m.Header, new { @class = "form-control", placeholder = "Edit a title" })
             @Html.ValidationMessageFor(m => m.Header, "", new { @class = "text-danger" })
         </div>
 
         @Html.LabelFor(m => m.Description)
         <div>
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", cols = 80, rows = 3, placeholder = "Write a brief description of the article" })
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", cols = 80, rows = 3, placeholder = "Edit the description of the article" })
             @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
         </div>
 

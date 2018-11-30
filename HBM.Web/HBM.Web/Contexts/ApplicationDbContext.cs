@@ -21,9 +21,11 @@ namespace HBM.Web.Contexts
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Article>()
             .HasMany(a => a.Tags)
-            .WithMany()
+            .WithMany(t => t.Articles)
             .Map(x =>
             {
                 x.MapLeftKey("Article_Id");

@@ -1,17 +1,17 @@
-﻿@using HBM.Web.Models
-@model IEnumerable<Article>
+﻿@model PagedList.IPagedList<HBM.Web.Models.Article>
+@using PagedList.Mvc;
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Articles";
-}
 
-@{
-    if (User.Identity.IsAuthenticated)
+    int userId = User.Identity.IsAuthenticated ? int.Parse(User.Identity.GetUserId()) : -1;
+    if (userId != -1)
     {
         <p>@Html.ActionLink("Create new", "Create", "Article", null, new { @class = "btn btn-primary btn-lg" })</p>
     }
 }
 
-<div class="row">
+<div class="row align-content-center">
     @{
         <div class="col-md-8">
             @foreach (var article in Model)
@@ -33,18 +33,53 @@
                         <div class="entry-content">
                             @article.Description
                         </div>
+                        <br/>
                         <div class="text-center text-uppercase">
-                            @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "more-link" })
+                            @{
+                                if (userId == article.UserId)
+                                {
+                                    @Html.ActionLink("Edit", "Edit", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })
+                                }
+                                @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })                              
+                            }
+                        </div>
+                        <div class="decoration">
+                            @{
+                                if (article.Tags != null && article.Tags.Count > 0)
+                                {
+                                    foreach (var tag in article.Tags)
+                                    {
+                                        <a href="#" class="btn btn-outline-primary">@tag.Key</a>
+                                    }
+                                }
+                            }
                         </div>
                     </div>
                     <div class="social-share">
                         <span class="social-share-title float-left text-capitalize">
-                            By <b>@article.User.UserName</b> on 19-Nov-18
-                        </span>
+                            Posted by <b>@article.User.UserName</b> on @article.DatePost
+                            @{
+                                if (article.DateEdited != null)
+                                {
+                                    <br />
+                                    <span>Last edited on @article.DateEdited</span>
+                                }
+                            }
+                        </span>                        
                         <ul class="text-center float-right"></ul>
                     </div>
                 </article>
             }
         </div>
     }
+</div>
+
+<br />
+<div class="d-flex justify-content-center">
+    <div class="p-2">
+        <p style="margin-top:30%;">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount </p>
+    </div>
+    <div class="p-2">
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+    </div>
 </div>

@@ -85,7 +85,6 @@ namespace HBM.Web.Migrations
                 .ForeignKey("dbo.Tags", t => t.Tag_Id, cascadeDelete: true)
                 .Index(t => t.Article_Id)
                 .Index(t => t.Tag_Id);
-            
         }
         
         public override void Down()

@@ -90,6 +90,12 @@
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.3.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -168,6 +174,7 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Extensions\CollectionHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -184,6 +191,10 @@
     <Compile Include="Migrations\201811181849599_UpdateUser.cs" />
     <Compile Include="Migrations\201811181849599_UpdateUser.Designer.cs">
       <DependentUpon>201811181849599_UpdateUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811191205546_AddArticlesCommentsDates.cs" />
+    <Compile Include="Migrations\201811191205546_AddArticlesCommentsDates.Designer.cs">
+      <DependentUpon>201811191205546_AddArticlesCommentsDates.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -209,6 +220,7 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -510,6 +522,8 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Shared\EditorTemplates\tinymce_full_compressed.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\tinymce_full.cshtml" />
+    <Content Include="Views\Article\Show.cshtml" />
+    <Content Include="Views\Article\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
@@ -534,6 +548,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811181849599_UpdateUser.resx">
       <DependentUpon>201811181849599_UpdateUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811191205546_AddArticlesCommentsDates.resx">
+      <DependentUpon>201811191205546_AddArticlesCommentsDates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
