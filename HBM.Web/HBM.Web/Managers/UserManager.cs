@@ -42,8 +42,10 @@ namespace HBM.Web.Managers
 
             ApplicationUser user = new ApplicationUser()
             {
-                UserName = username, Email = email,
-                IsEmailConfirmed = false, 
+                UserName = username,
+                Email = email,
+                IsEmailConfirmed = false,
+                DateRegistered = DateTime.UtcNow,
                 PasswordHash =  PasswordHasher.HashPassword(password)
             };
             int result = 1;
@@ -51,7 +53,10 @@ namespace HBM.Web.Managers
             {
                 await UserStore.CreateAsync(user);
             }
-            catch { result = 0; }
+            catch (Exception ex)
+            {
+                result = 0;
+            }
             if (result == 0)
                 return UserCreationResult.UnknownError;
             return UserCreationResult.Created;

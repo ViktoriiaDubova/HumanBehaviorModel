@@ -24,7 +24,8 @@
                     <div class="post-thumb">
                         <a href="@Url.Action("Show", new { id = article.Id })">
                             @{
-                                var img = article.Image?.Path ?? Url.Content("~/Content/img/no-image.png");
+                                var img = article.Image?.Path ?? "~/Content/img/no-image.png";
+                                img = Url.Content(img);
                             }
                             <img class="img-preview" src="@img" alt="">
                         </a>
@@ -43,7 +44,7 @@
                                 @Html.ActionLink("Continue reading", "Show", "Article", new { id = article.Id }, new { @class = "btn btn-outline-dark" })
                             }
                         </div>
-                        <div class="decoration">
+                        <div class="decoration mt-4">
                             @{
                                 if (article.Tags != null && article.Tags.Count > 0)
                                 {
