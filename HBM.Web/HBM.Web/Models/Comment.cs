@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HBM.Web.Models
 {
@@ -8,7 +7,7 @@ namespace HBM.Web.Models
     {
         [Key]
         public int Id { get; set; }
-        [StringLength(512, MinimumLength = 8)]
+        [StringLength(512, MinimumLength = 2)]
         public string Text { get; set; }
         [DataType(DataType.DateTime)]
         public DateTime DatePost { get; set; }

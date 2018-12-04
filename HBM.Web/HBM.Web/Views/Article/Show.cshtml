@@ -1,5 +1,6 @@
 ﻿@model HBM.Web.Models.Article
 @using Microsoft.AspNet.Identity;
+@using HBM.Web.ViewModels;
 @{
     ViewBag.Title = "Show";
 
@@ -18,13 +19,13 @@
                             @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
                         </div>
                     }
-                        <div class="post-thumb col-md-6">
-                            @{
-                                var img = Model.Image?.Path ?? "~/Content/img/no-image.png";
-                                img = Url.Content(img);
-                            }
-                            <img class="img-preview" src="@img" alt="">
-                        </div>
+                    <div class="post-thumb col-md-6">
+                        @{
+                            var img = Model.Image?.Path ?? "~/Content/img/no-image.png";
+                            img = Url.Content(img);
+                        }
+                        <img class="img-preview" src="@img" alt="">
+                    </div>
                     <div class="post-content">
                         <header class="entry-header text-center text-uppercase">
                             <h1 class="entry-title">@Model.Header</h1>
@@ -56,22 +57,44 @@
                         </div>
                     </div>
                 </article>
-                @*<div class="bottom-comment">
-                        <div class="comment-img">
-                            <img class="img-circle" src="Article_files/6761ec444081a99b9e34c9c300064fb7.jpg" alt="" width="50">
-                        </div>
-                        <div class="comment-text">
-                            <h5><a href="https://cs302.000webhostapp.com/auth/view?id=1">Vardir</a></h5>
-                            <p class="comment-date">
-                                May 20, 2018
-                            </p>
-                            <p class="para">
-                                Єба, god of war)
-                            </p>
-                        </div>
-                    </div>*@
-
-
+                @{
+                    if (Model.Comments != null)
+                    {
+                        foreach (var comment in Model.Comments)
+                        {
+                            <div class="bottom-comment">
+                                <div class="comment-img avatar-block">
+                                    @{
+                                        if (comment.User.ImageId == null)
+                                        {
+                                            <span class="avatar-span">@comment.User.UserName[0]</span>
+                                        }
+                                        else
+                                        {
+                                            <img class="img-circle" src="@Url.Content(comment.User.Avatar.Path)" alt="" width="50">
+                                        }
+                                    }
+                                </div>
+                                <div class="comment-text">
+                                    <h5><a href="#">@comment.User.UserName</a></h5>
+                                    <p class="comment-date">
+                                        @comment.DatePost
+                                    </p>
+                                    <p class="para">
+                                        @comment.Text
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+                @{
+                    if (userId != -1)
+                    {
+                        //var replyModel = ViewBag.ReplyModel != null ? ViewBag.ReplyModel as ReplyArticleViewModel : new ReplyArticleViewModel() { ArticleId = Model.Id };
+                        @Html.Partial("_ReplyArticle", new ReplyArticleViewModel() { ArticleId = Model.Id })
+                    }
+                }
             </div>
         </div>
     </div>

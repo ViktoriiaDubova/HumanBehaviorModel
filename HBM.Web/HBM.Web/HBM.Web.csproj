@@ -210,6 +210,7 @@
     <Compile Include="ViewModels\ImageUploadViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
+    <Compile Include="ViewModels\ReplyArticleViewModel.cs" />
     <Compile Include="ViewModels\TagsPageViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -529,6 +530,7 @@
     <Content Include="Views\Article\Show.cshtml" />
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Article\Tags.cshtml" />
+    <Content Include="Views\Shared\_ReplyArticle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />

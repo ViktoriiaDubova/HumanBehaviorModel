@@ -12,6 +12,14 @@ namespace HBM.Web.Controllers
         {
             file.SaveAs(server.MapPath(destination));
         }
+        public static void RemoveFile(HttpServerUtilityBase server, string fileName)
+        {
+            string path = server.MapPath(fileName);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
 
         public static string UploadFile(HttpPostedFileBase file, HttpServerUtilityBase server, string destination)
         {

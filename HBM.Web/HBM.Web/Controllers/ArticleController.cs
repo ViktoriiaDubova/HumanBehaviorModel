@@ -151,6 +151,35 @@ namespace HBM.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ReplyArticle(ReplyArticleViewModel model)
+        {
+            if (string.IsNullOrWhiteSpace(model.Text))
+                ModelState.AddModelError("Text", "The text is empty!");
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction("Show", new { id = model.ArticleId });
+            }
+
+            var article = await db.Articles.FindAsync(model.ArticleId);
+            if (article == null)
+                return HttpNotFound("Article to reply was not found");
+            var userId = int.Parse(User.Identity.GetUserId());
+            var user = await db.Users.FindAsync(userId);
+            var comment = new Comment()
+            {
+                Article = article,
+                DatePost = DateTime.UtcNow,
+                Text = model.Text.Trim(),
+                User = user
+            };
+            article.Comments.Add(comment);
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Show", new { id= model.ArticleId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ArticleEditViewModel model)
         {
             if (ModelState.IsValid)
@@ -202,6 +231,8 @@ namespace HBM.Web.Controllers
             var article = await db.Articles.FindAsync(id);
             if (article == null)
                 return HttpNotFound("Article to delete not found");
+            if (article.ImageId != null)
+                FileController.RemoveFile(Server, article.Image.Path);
             db.Articles.Remove(article);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

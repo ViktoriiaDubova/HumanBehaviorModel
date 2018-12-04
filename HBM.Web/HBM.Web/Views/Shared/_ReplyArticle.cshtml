@@ -1,0 +1,18 @@
+﻿@model HBM.Web.ViewModels.ReplyArticleViewModel
+
+<div class="leave-comment">
+    <h4>Leave a reply</h4>
+    @using (Html.BeginForm("ReplyArticle", "Article", FormMethod.Post, new { @class = "form-horizontal contact-form", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m => m.ArticleId)
+        <div class='form-group'>
+            <div class='col-md-12'>
+                @Html.TextAreaFor(m => m.Text, 4, 60, new { @class= "form-control input-group-lg", placeholder = "Write message" })
+                @Html.ValidationMessageFor(m => m.Text)
+            </div>
+        </div>
+        <button type='submit' class='btn send-btn'>Post comment</button>
+    }
+</div>

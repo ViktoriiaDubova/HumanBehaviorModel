@@ -190,7 +190,7 @@ a.more-link:hover {
 
 .post .social-share {
     border-top: 1px solid #EEE;
-    padding: 15px 0 75px;
+    padding: 15px 0px 75px;
 }
 
 .social-share span a {
@@ -201,6 +201,11 @@ a.more-link:hover {
     padding: 9px 0;
     font-style: italic;
     font-size: 13px;
+    margin-left: 15px;
+}
+
+.decoration {
+    margin-bottom: 15px;
 }
 
 .social-share span a:hover {
@@ -225,9 +230,9 @@ a.more-link:hover {
     flex-direction: column;
 }
 
-    .post-thumb:hover .post-thumb-overlay {
-        opacity: 1;
-    }
+.post-thumb:hover .post-thumb-overlay {
+    opacity: 1;
+}
 
 .post-thumb-overlay {
     position: absolute;
@@ -259,6 +264,113 @@ a.more-link:hover {
     margin: 5px;
     margin-top: -18px;
     text-transform: uppercase;
+}
+
+.bottom-comment {
+    background: #fff;
+    padding: 20px;
+    margin: 50px 0;
+    color: #212121;
+    overflow: hidden;
+}
+
+.bottom-comment .comment-text {
+    padding: 2px;
+}
+
+.bottom-comment h4 {
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.bottom-comment .comment-img {
+    padding: 10px 15px 100px;
+    float: left;
+}
+
+.bottom-comment h5 {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.bottom-comment p.comment-date {
+    color: #888888;
+}
+
+.bottom-comment p.para {
+    color: #212121;
+    font-size: 13px;
+    line-height: 24px;
+    margin-bottom: 5px;
+}
+
+.bottom-comment a.replay {
+    text-transform: uppercase;
+    color: #212121;
+    background: #eee;
+}
+
+.bottom-comment a.replay:hover {
+    background-color: #ddd;
+}
+
+.leave-comment {
+    background-color: #fff;
+    margin: 30px 0;
+    padding: 20px;
+    color: #212121;
+}
+
+.leave-comment h4 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+.leave-comment input, .leave-comment textarea {
+    background-color: #FAFAFA;
+    color: #999999;
+    border-radius: 0;
+    font-size: 14px;
+    line-height: 28px;
+    padding: 20px;
+    border-color: #eee;
+    -webkit-box-shadow: inset 0 0 0 rgba(0, 0, 0, .075);
+    box-shadow: inset 0 0 0 rgba(0, 0, 0, .075);
+}
+
+.leave-comment input[type="text"] + input[type="email"] {
+    border: 1px solid #eeeeee;
+    font-style: italic;
+}
+
+.avatar-block {
+    min-height: 50px;
+    float: left;
+    width: 50px;
+    background-color: rgba(40, 167, 69, 1);
+    display: block;
+    border-radius: 50%;
+    top: 50%;
+    padding: 0px !important;
+    margin-right: 15px;
+}
+
+.avatar-span {
+    display: block;
+    transform: translate(38%, calc(-0.5em + 60%));
+    color: white;
+    font-size: 16pt;
+}
+
+.irc_mi {
+    box-shadow: none !important;
 }
 
 /*
