@@ -40,13 +40,15 @@ namespace HBM.Web.Managers
             if (await UserStore.FindByEmailAsync(email) != null)
                 return UserCreationResult.UserEmailDuplicate;
 
+            UserRole role = UserStore.DbContext.UserRoles.FirstOrDefault(r => r.Key == UserRoleKey.Unauthorized.ToString().ToLower());
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = username,
                 Email = email,
                 IsEmailConfirmed = false,
                 DateRegistered = DateTime.UtcNow,
-                PasswordHash =  PasswordHasher.HashPassword(password)
+                PasswordHash =  PasswordHasher.HashPassword(password),
+                UserRole = role
             };
             int result = 1;
             try

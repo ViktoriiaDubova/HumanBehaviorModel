@@ -6,16 +6,28 @@ namespace HBM.Web.Contexts
     public class UserDbContext : DbContext
     {
         public DbSet<ApplicationUser> Users { get; set; }
-        public DbSet<Image> Avatars { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         public UserDbContext() : base("MainDB")
         {
 
         }
 
-        public static UserDbContext Create()
+        public static UserDbContext Create() => new UserDbContext();
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            return new UserDbContext();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<UserRole>()
+                .HasMany(r => r.Permissions)
+                .WithMany().Map(x =>
+                {
+                    x.MapLeftKey("Role_Id");
+                    x.MapRightKey("Permission_Id");
+                    x.ToTable("RolePermissions");
+                });
         }
     }
 }

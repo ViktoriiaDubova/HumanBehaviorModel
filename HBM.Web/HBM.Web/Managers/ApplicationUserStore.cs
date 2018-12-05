@@ -12,9 +12,12 @@ namespace HBM.Web.Managers
     {
         private UserStore<IdentityUser> userStore;
 
+        public UserDbContext DbContext { get; }
+
         public ApplicationUserStore(UserDbContext context)
         {
             userStore = new UserStore<IdentityUser>(context);
+            DbContext = context;
         }
         public Task CreateAsync(ApplicationUser user)
         {

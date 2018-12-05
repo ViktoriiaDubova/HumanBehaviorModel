@@ -10,6 +10,8 @@ namespace HBM.Web.Contexts
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
 
         public ArticleDbContext() : base("MainDB")
         {
@@ -29,6 +31,15 @@ namespace HBM.Web.Contexts
                 x.MapRightKey("Tag_Id");
                 x.ToTable("ArticleTags");
             });
+            
+            modelBuilder.Entity<UserRole>()
+                .HasMany(r => r.Permissions)
+                .WithMany().Map(x =>
+                {
+                    x.MapLeftKey("Role_Id");
+                    x.MapRightKey("Permission_Id");
+                    x.ToTable("RolePermissions");
+                });
         }
     }
 }

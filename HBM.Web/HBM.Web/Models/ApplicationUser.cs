@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace HBM.Web.Models
 {
@@ -30,7 +31,22 @@ namespace HBM.Web.Models
 
         [ForeignKey("Avatar")]
         public int? ImageId { get; set; }
+        public int? UserRoleId { get; set; }
 
         public virtual Image Avatar { get; set; }
+        public virtual UserRole UserRole { get; set; }
+        
+        public bool HasPermission(string key)
+        {
+            if (UserRoleId == null || key == null)
+                return false;
+            return UserRole.HasPermission(key);
+        }
+        public bool HasPermission(PermissionKey key)
+        {
+            if (UserRoleId == null)
+                return false;
+            return UserRole.HasPermission(key.ToString());
+        }
     }
 }

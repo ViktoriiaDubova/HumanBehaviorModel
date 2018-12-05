@@ -197,12 +197,18 @@
     <Compile Include="Migrations\201811191205546_AddArticlesCommentsDates.Designer.cs">
       <DependentUpon>201811191205546_AddArticlesCommentsDates.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812040801256_AddUserRolesWithPermissions.cs" />
+    <Compile Include="Migrations\201812040801256_AddUserRolesWithPermissions.Designer.cs">
+      <DependentUpon>201812040801256_AddUserRolesWithPermissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Article.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Image.cs" />
+    <Compile Include="Models\Permission.cs" />
     <Compile Include="Models\Tag.cs" />
+    <Compile Include="Models\UserRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ArticleCreateViewModel.cs" />
@@ -559,6 +565,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811191205546_AddArticlesCommentsDates.resx">
       <DependentUpon>201811191205546_AddArticlesCommentsDates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812040801256_AddUserRolesWithPermissions.resx">
+      <DependentUpon>201812040801256_AddUserRolesWithPermissions.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

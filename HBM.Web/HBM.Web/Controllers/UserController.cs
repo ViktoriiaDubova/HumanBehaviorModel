@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using HBM.Web.Managers;
 using HBM.Web.Models;
 using HBM.Web.ViewModels;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 
@@ -66,7 +67,7 @@ namespace HBM.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
-        {
+        {            
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await UserManager.FindByNameOrEmailAsync(model.UserIdent, model.Password);
@@ -76,6 +77,9 @@ namespace HBM.Web.Controllers
                 }
                 else
                 {
+                    if (!user.HasPermission(PermissionKey.LogIn))
+                        return HttpNotFound("You are not allowed to login on the site. You may be unauthorized");
+
                     ClaimsIdentity claim = new ClaimsIdentity("ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
                     claim.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString(), ClaimValueTypes.String));
                     claim.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName, ClaimValueTypes.String));
@@ -113,5 +117,12 @@ namespace HBM.Web.Controllers
             }
             return View(model);
         }
+        
+        public async Task<bool> HasPermission(PermissionKey key)
+        {
+            var user = await GetUser(User.Identity?.GetUserId());
+            return user != null && user.HasPermission(key);
+        }
+        public async Task<ApplicationUser> GetUser(string id) => id != null ? await UserManager.FindByIdAsync(id) : null;
     }    
 }

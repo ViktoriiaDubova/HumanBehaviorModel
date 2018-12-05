@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -86,14 +85,18 @@ namespace HBM.Web.Controllers
                 return HttpNotFound("Article not found!");
             return View(article);
         }
-        //Get: Create
+        
         public ActionResult Create()
         {
+            if (!HasPermission(PermissionKey.CreateArticle))
+                return HttpNotFound("You are not allowed to create articles");
             return View();
         }
-        //Get: Edit
+        
         public async Task<ActionResult> Edit(int id)
         {
+            if (!HasPermission(PermissionKey.EditArticle))
+                return HttpNotFound("You are not allowed to edit articles");
             var article = await db.Articles.FindAsync(id);
             if (article == null)
                 return HttpNotFound("Article not found");
@@ -113,6 +116,8 @@ namespace HBM.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ArticleCreateViewModel model)
         {
+            if (!HasPermission(PermissionKey.CreateArticle))
+                return HttpNotFound("You are not allowed to create articles");
             if (ModelState.IsValid)
             {
                 var tagCreationResults = VerifyTags(model.Tags);
@@ -153,6 +158,8 @@ namespace HBM.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ReplyArticle(ReplyArticleViewModel model)
         {
+            if (!HasPermission(PermissionKey.ReplyArticle))
+                return HttpNotFound("You are not allowed to reply on articles");
             if (string.IsNullOrWhiteSpace(model.Text))
                 ModelState.AddModelError("Text", "The text is empty!");
             if (!ModelState.IsValid)
@@ -182,6 +189,8 @@ namespace HBM.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ArticleEditViewModel model)
         {
+            if (!HasPermission(PermissionKey.EditArticle))
+                return HttpNotFound("You are not allowed to edit articles");
             if (ModelState.IsValid)
             {
                 var article = await db.Articles.FindAsync(model.Id);
@@ -228,6 +237,8 @@ namespace HBM.Web.Controllers
 
         public async Task<ActionResult> Delete(int id)
         {
+            if (!HasPermission(PermissionKey.DeleteArticle))
+                return HttpNotFound("You are not allowed to delete articles");
             var article = await db.Articles.FindAsync(id);
             if (article == null)
                 return HttpNotFound("Article to delete not found");
@@ -244,6 +255,14 @@ namespace HBM.Web.Controllers
             base.Dispose(disposing);
         }
 
+        private bool HasPermission(PermissionKey key)
+        {
+            var user = GetCurrentUser();
+            return user != null && user.HasPermission(key);
+        }
+        private ApplicationUser GetCurrentUser() => GetUser(User.Identity?.GetUserId());
+        private ApplicationUser GetUser(int id) => db.Users.Find(id);
+        private ApplicationUser GetUser(string id) => id != null ? GetUser(int.Parse(id)) : null;
         private IEnumerable<Tag> LoadTags(IEnumerable<string> keys)
         {
             foreach (var key in keys)
