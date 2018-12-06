@@ -14,6 +14,12 @@
                 if (User.Identity.IsAuthenticated)
                 {
                     <ul class="nav navbar-nav mr-auto float-right">
+                        @{
+                            if (User.IsInRole("admin"))
+                            {
+                                <li class="nav-item">@Html.ActionLink("Admin panel", "Index", "Manage", null, new { @class = "nav-link" })</li>
+                            }
+                        }
                         <li class="nav-item">@Html.ActionLink("Me", "Index", "User", null, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Sign out", "SignOut", "User", null, new { @class = "nav-link" })</li>
                     </ul>

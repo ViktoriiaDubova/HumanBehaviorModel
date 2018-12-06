@@ -4,9 +4,9 @@
 @using HBM.Web.Controllers;
 @{
     ViewBag.Title = "Articles";
-
+    
     int userId = User.Identity.IsAuthenticated ? int.Parse(User.Identity.GetUserId()) : -1;
-    if (userId != -1)
+    if (userId != -1 && !User.IsInRole("banned"))
     {
         <p>@Html.ActionLink("Create new", "Create", "Article", null, new { @class = "btn btn-primary btn-lg" })</p>
     }

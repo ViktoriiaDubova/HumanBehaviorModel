@@ -85,8 +85,8 @@ namespace HBM.Web.Controllers
                     claim.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName, ClaimValueTypes.String));
                     claim.AddClaim(new Claim("http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider",
                         "OWIN Provider", ClaimValueTypes.String));
-                    //if (user.Role != null)
-                    //    claim.AddClaim(new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role.Name, ClaimValueTypes.String));
+                    if (user.UserRole != null)
+                        claim.AddClaim(new Claim(ClaimsIdentity.DefaultRoleClaimType, user.UserRole.Key, ClaimValueTypes.String));
 
                     AuthenticationManager.SignOut();
                     AuthenticationManager.SignIn(new AuthenticationProperties

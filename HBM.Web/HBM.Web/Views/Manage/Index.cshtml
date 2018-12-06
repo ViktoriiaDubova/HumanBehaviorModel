@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            Admin panel gives you possibility to manage site data. Create roles, assign them to users. Manage articles and tags. And so on.
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Manage users</h2>
+        <p>You can activate unauthorized users, ban authorized ones, unblock banned ones, assign roles to users.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Users")">Manage &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Manage roles</h2>
+        <p>You can create, edit and remove roles that can be applied to users.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Roles")">Manage &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Manage permissions</h2>
+        <p>You can create, edit and remove permissions that can be applied to roles.</p>
+        <p><a class="btn btn-default" href="@Url.Action("Permissions")">Manage &raquo;</a></p>
+    </div>
+</div>

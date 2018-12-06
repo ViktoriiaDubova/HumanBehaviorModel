@@ -174,8 +174,10 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Extensions\CollectionHelpers.cs" />
+    <Compile Include="Filters\AdminPanelFilter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -201,6 +203,10 @@
     <Compile Include="Migrations\201812040801256_AddUserRolesWithPermissions.Designer.cs">
       <DependentUpon>201812040801256_AddUserRolesWithPermissions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812051801547_Unknown.cs" />
+    <Compile Include="Migrations\201812051801547_Unknown.Designer.cs">
+      <DependentUpon>201812051801547_Unknown.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Article.cs" />
@@ -213,6 +219,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ArticleCreateViewModel.cs" />
     <Compile Include="ViewModels\ArticleEditViewModel.cs" />
+    <Compile Include="ViewModels\AssignRoleViewModel.cs" />
     <Compile Include="ViewModels\ImageUploadViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\RegisterViewModel.cs" />
@@ -537,10 +544,15 @@
     <Content Include="Views\Article\Edit.cshtml" />
     <Content Include="Views\Article\Tags.cshtml" />
     <Content Include="Views\Shared\_ReplyArticle.cshtml" />
+    <Content Include="Views\Manage\_Layout.cshtml" />
+    <Content Include="Views\Manage\Index.cshtml" />
+    <Content Include="Views\Manage\_NavBar.cshtml" />
+    <Content Include="Views\Manage\Users.cshtml" />
+    <Content Include="Views\Manage\AssignRole.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\Images\Articles\" />
     <Folder Include="Content\img\" />
-    <Folder Include="Images\Articles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -568,6 +580,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812040801256_AddUserRolesWithPermissions.resx">
       <DependentUpon>201812040801256_AddUserRolesWithPermissions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051801547_Unknown.resx">
+      <DependentUpon>201812051801547_Unknown.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

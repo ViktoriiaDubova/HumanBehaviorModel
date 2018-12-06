@@ -1,0 +1,27 @@
+﻿@model HBM.Web.ViewModels.AssignRoleViewModel
+@{
+    ViewBag.Title = "Assign role";
+    Layout = "_Layout.cshtml";
+}
+
+<h2>Assign role</h2>
+
+<div>
+    @using (Html.BeginForm("AssignRole", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "role" }))
+    {
+        @Html.ValidationSummary(true)
+        <br />
+        @Html.HiddenFor(m => m.UserId)
+        @Html.LabelFor(m => m.UserName, Model.UserName + " is ", null)
+        <div class="form-group">
+            @Html.DropDownListFor(m => m.SelectedRoleId, Model.Roles, null, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Roles, "", new { @class = "text-danger" })
+        </div>
+
+        <div class="form-group">
+            <div class="mt-4 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+            </div>
+        </div>
+    }
+</div>

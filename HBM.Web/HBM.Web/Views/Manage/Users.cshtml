@@ -1,0 +1,33 @@
+﻿@model PagedList.IPagedList<HBM.Web.Models.ApplicationUser>
+@{
+    ViewBag.Title = "Users";
+    Layout = "_Layout.cshtml";
+}
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Username</th><th>Email</th><th>Role</th><th>Date registered</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            var role = user.UserRole?.Key ?? "none";
+            string rowStyle = string.Empty;
+            switch (role)
+            {
+                case "admin": rowStyle = "table-success"; break;
+                case "blocked": rowStyle = "table-danger"; break;
+                case "moderator": rowStyle = "table-primary"; break;
+                case "unauthorized": rowStyle = "table-warning"; break;
+            }
+            <tr class="@rowStyle">
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@Html.ActionLink(role, "AssignRole", new { id = user.Id }, new { style = "color:black;" })</td>
+                <td>@user.DateRegistered</td>
+            </tr>
+        }
+    </tbody>
+</table>

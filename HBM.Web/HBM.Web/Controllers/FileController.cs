@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,12 @@ namespace HBM.Web.Controllers
 {
     public static class FileController
     {
+        public static ReadOnlyDictionary<string, string> Paths = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
+        {
+            ["images"] = "App_Data/Images/",
+            ["article_img"] = "App_Data/Images/Articles/"
+        });
+
         public static void ReplaceFile(HttpPostedFileBase file, HttpServerUtilityBase server, string destination)
         {
             file.SaveAs(server.MapPath(destination));

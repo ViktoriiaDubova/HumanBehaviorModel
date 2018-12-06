@@ -15,7 +15,7 @@ namespace HBM.Web.Controllers
     [Authorize]
     public class ArticleController : Controller
     {
-        private int articlesPerPage = 6;
+        private readonly int ArticlesPerPage = 6;
         private ArticleDbContext db = new ArticleDbContext();
 
         public static object[] Ordering = new[]{
@@ -52,7 +52,7 @@ namespace HBM.Web.Controllers
             }
             
             int pageNumber = (page ?? 1);
-            var list = articles.ToList().ToPagedList(pageNumber, articlesPerPage);
+            var list = articles.ToList().ToPagedList(pageNumber, ArticlesPerPage);
             return View(list);
         }
 
@@ -70,7 +70,7 @@ namespace HBM.Web.Controllers
             }
             var model = new TagsPageViewModel()
             {
-                Articles = articles?.ToList().ToPagedList(page ?? 1, articlesPerPage),
+                Articles = articles?.ToList().ToPagedList(page ?? 1, ArticlesPerPage),
                 SelectedTag = selected ?? -1, Tags = db.Tags.ToList()
             };
 
@@ -127,8 +127,8 @@ namespace HBM.Web.Controllers
                 Image img = null;
                 if (model.ImageFile != null)
                 {
-                    string fileName = FileController.UploadFile(model.ImageFile, Server, "Images/Articles/");                    
-                    img = new Image() { Path = $"~/Images/Articles/{fileName}" };
+                    string fileName = FileController.UploadFile(model.ImageFile, Server, FileController.Paths["article_img"]);                    
+                    img = new Image() { Path = $"~/{FileController.Paths["article_img"]}{fileName}" };
                     db.Images.Add(img);
                     await db.SaveChangesAsync();
                 }
@@ -218,8 +218,8 @@ namespace HBM.Web.Controllers
                         FileController.ReplaceFile(model.ImageFile, Server, article.Image.Path);                    
                     else
                     {
-                        string fileName = FileController.UploadFile(model.ImageFile, Server, "Images/Articles/");
-                        img = new Image() { Path = $"~/Images/Articles/{fileName}" };
+                        string fileName = FileController.UploadFile(model.ImageFile, Server, FileController.Paths["article_img"]);
+                        img = new Image() { Path = $"~/{FileController.Paths["article_img"]}{fileName}" };
                         db.Images.Add(img);
                         await db.SaveChangesAsync();
                         article.ImageId = img.Id;
