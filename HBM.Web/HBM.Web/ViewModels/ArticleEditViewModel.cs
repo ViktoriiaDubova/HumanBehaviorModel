@@ -1,6 +1,6 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations;
-using System.Web;
 
 namespace HBM.Web.ViewModels
 {

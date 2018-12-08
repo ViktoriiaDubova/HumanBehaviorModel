@@ -56,6 +56,7 @@ namespace HBM.Web.Controllers
             {
                 Id = user.Id,
                 UserName = user.UserName,
+                FullName = user.FullName,
                 Email = user.Email,
                 Role = user.UserRole.Key,
                 About = user.About,
@@ -66,6 +67,51 @@ namespace HBM.Web.Controllers
                 Banned = user.UserStats.TimesBanned
             };
             return View(model);
+        }
+
+        [Authorize]
+        public async Task<ActionResult> Edit()
+        {
+            var user = await GetUser(User.Identity.GetUserId());
+            var model = new UserEditViewModel()
+            {
+                About = user.About,
+                Id = user.Id,
+                FullName = user.FullName,
+                ImageUrl = user.Avatar?.Path,
+                UserName = user.UserName
+            };
+            return View(model);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(UserEditViewModel model)
+        {
+            var user = await GetUser(User.Identity.GetUserId());
+            if (user.Id != model.Id)
+                return HttpNotFound("You can not edit other user's information");
+            user.About = model.About;
+            user.FullName = model.FullName;
+
+            Image img = null;
+            if (model.ImageFile != null)
+            {
+                if (user.ImageId != null)
+                    FileController.ReplaceFile(model.ImageFile, Server, user.Avatar.Path);
+                else
+                {
+                    string fileName = FileController.UploadFile(model.ImageFile, Server, FileController.Paths["user_img"]);
+                    img = new Image() { Path = $"~/{FileController.Paths["user_img"]}{fileName}" };
+                    UserManager.UserDbContext.Images.Add(img);
+                    await UserManager.UserDbContext.SaveChangesAsync();
+                    user.ImageId = img.Id;
+                }
+            }
+
+            await UserManager.UserDbContext.SaveChangesAsync();
+            return RedirectToAction("Show", new { id = model.Id });
         }
 
         [Authorize]

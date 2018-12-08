@@ -5,27 +5,6 @@
     int userId = int.Parse(User.Identity?.GetUserId() ?? "-1");
 }
 
-@if (userId == Model.Id)
-{
-    <div class="dimm-overlay-1" id="dimm-overlay">
-        <div class="btn btn-default dimm-close-button" onclick="closeDimmOverlay()">X</div>
-        @using (Html.BeginForm("SetAvatar", "User", new { id = Model.Id }, FormMethod.Post, new { @class = "container", enctype = "multipart /form-data" }))
-        {
-            @Html.AntiForgeryToken()
-
-            <div class="form-group field-imageupload-image required">
-                <img id="aImgShow" src="" class="img-preview post-thumb" />
-                <input type="hidden" name="ImageUpload[image]" value="">
-                <input type="file" name="ImageFile" class="form-control" />
-                <input type="file" id="imageupload-image" name="ImageUpLoad[image]" aria-required="true" onchange="uploadImage(this)" data-target="#aImgShow">
-                <div class="help-block"></div>
-            </div>
-            <div class="form-group">
-                <button type="submit" class="btn btn-success">Save</button>
-            </div>
-        }
-    </div>
-}
 <div class="container">
     <h5>[@Model.Role]</h5>
     <div class='row' style='margin-bottom:100px'>
@@ -36,19 +15,13 @@
                         var img = Model.Avatar ?? "~/Content/img/no-image.png";
                         img = Url.Content(img);
                         <img class="img-preview" src="@img" alt="">
-                    }
-                    @if (userId == Model.Id)
-                    {
-                        <a onclick="openDimmOverlay()" href="#" class="post-thumb-overlay text-center">
-                            <div class="text-uppercase text-center">Set image</div>
-                        </a>
-                    }
+                    }                    
                 </div>
                 <div class="post-content">
                     @if (userId == Model.Id)
                     {
                         <div class="btn-continue-reading text-center text-uppercase">
-                            @Html.ActionLink("Update info", "Update", new { id = Model.Id }, new { @class = "more-link" })
+                            @Html.ActionLink("Update info", "Edit", null, new { @class = "more-link" })
                         </div>
                         <div style='height:50px'></div>
                     }
@@ -78,8 +51,18 @@
             </div>
         </div>
         <div class='col-md-8 user-info-panel'>
-            <div class="social-share" style='background:rgb(42, 46, 84); color:white'>
+            <div class="social-share p-1" style='background:rgb(42, 46, 84); color:white'>
+                @if (userId == Model.Id)
+                {
+                    <a href="@Url.Action("Edit", "User")" class="float-right text-white">
+                        <i class="fa fa-cog fa-2x"></i>
+                    </a>
+                }
                 <h3 class='widget-title text-center'>
+                    @if (Model.FullName != null)
+                    {
+                        <span>@Model.FullName&ensp;-&ensp;</span>
+                    }
                     @Model.UserName
                 </h3>
             </div>
@@ -96,8 +79,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts
-{
-    <script type="text/javascript" src="~/Scripts/image_preview.js"></script>
-}

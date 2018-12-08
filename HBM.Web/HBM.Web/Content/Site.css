@@ -11,7 +11,7 @@
     padding-top: 15px;
 }
 
-.user-info-panel {
+.user-info-panel avatar{
     background-color: rgba(75, 97, 149, 0.08);
     color: black;
     border-top: black solid 1px;

@@ -570,6 +570,7 @@
     <Content Include="Views\Manage\Users.cshtml" />
     <Content Include="Views\Manage\AssignRole.cshtml" />
     <Content Include="Views\User\Show.cshtml" />
+    <Content Include="Views\User\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />
