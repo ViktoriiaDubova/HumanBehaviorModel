@@ -7,62 +7,62 @@
     int userId = User.Identity.IsAuthenticated ? int.Parse(User.Identity.GetUserId()) : -1;
 }
 
-<div class="main-content">
+<div class="main-content col-md-auto">
     <div class="container align-content-center">
         <div class="row" style="position: relative;">
-            <div class="">
-                <article class="post">
-                    @if (userId == Model.UserId)
-                    {
-                        <div class="text-right">
-                            @Html.ActionLink("Edit", "Edit", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
-                            @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
-                        </div>
-                    }
-                    <div class="post-thumb col-md-6">
-                        @{
-                            var img = Model.Image?.Path ?? "~/Content/img/no-image.png";
-                            img = Url.Content(img);
-                        }
-                        <img class="img-preview" src="@img" alt="">
+            <article class="post w-100">
+                @if (userId == Model.UserId)
+                {
+                    <div class="text-right">
+                        @Html.ActionLink("Edit", "Edit", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
+                        @Html.ActionLink("Delete", "Delete", "Article", new { id = Model.Id }, new { @class = "btn btn-outline-dark" })
                     </div>
-                    <div class="post-content">
-                        <header class="entry-header text-center text-uppercase">
-                            <h1 class="entry-title">@Model.Header</h1>
-                        </header>
-                        <div class="entry-content para">
-                            @Html.Raw(@Model.Content)
-                        </div>
+                }
+                <div class="post-thumb col-md-6">
+                    @{
+                        var img = Model.Image?.Path ?? "~/Content/img/no-image.png";
+                        img = Url.Content(img);
+                    }
+                    <img class="img-preview" src="@img" alt="">
+                </div>
+                <div class="post-content">
+                    <header class="entry-header text-center text-uppercase">
+                        <h1 class="entry-title">@Model.Header</h1>
+                    </header>
+                    <div class="entry-content para">
+                        @Html.Raw(@Model.Content)
+                    </div>
 
-                        <div class="decoration">
+                    <div class="decoration">
+                        @{
+                            foreach (var tag in Model.Tags)
+                            {
+                                <a href="@Url.Action("Tags", new { selected = tag.Id })" class="btn btn-outline-primary">@tag.Key</a>
+                            }
+                        }
+                    </div>
+
+                    <div class="social-share">
+                        <span class="social-share-title pull-left">
+                            Posted by <a href="@Url.Action("Show", "User", new { id=Model.UserId })" class="card-link">@Model.User.UserName</a> on @Model.DatePost
                             @{
-                                foreach (var tag in Model.Tags)
+                                if (Model.DateEdited != null)
                                 {
-                                    <a href="@Url.Action("Tags", new { selected = tag.Id })" class="btn btn-outline-primary">@tag.Key</a>
+                                    <br />
+                                    <span>Last edited on @Model.DateEdited</span>
                                 }
                             }
-                        </div>
-
-                        <div class="social-share">
-                            <span class="social-share-title pull-left">
-                                Posted by <b><a href="#">@Model.User.UserName</a></b> on @Model.DatePost
-                                @{
-                                    if (Model.DateEdited != null)
-                                    {
-                                        <br />
-                                        <span>Last edited on @Model.DateEdited</span>
-                                    }
-                                }
-                            </span>
-                        </div>
+                        </span>
                     </div>
-                </article>
-                @{
-                    if (Model.Comments != null)
-                    {
-                        foreach (var comment in Model.Comments)
+                </div>
+            </article>
+            @{
+                if (Model.Comments != null)
+                {
+                    <div class="d-flex flex-column w-100">
+                        @foreach (var comment in Model.Comments)
                         {
-                            <div class="bottom-comment">
+                            <div class="bottom-comment w-100" style="margin:0px 0px 10px 0px">
                                 <div class="comment-img avatar-block">
                                     @{
                                         if (comment.User.ImageId == null)
@@ -76,7 +76,7 @@
                                     }
                                 </div>
                                 <div class="comment-text">
-                                    <h5><a href="#">@comment.User.UserName</a></h5>
+                                    <h5><a href="@Url.Action("Show", "User", new { comment.User.Id })" class="card-link">@comment.User.UserName</a></h5>
                                     <p class="comment-date">
                                         @comment.DatePost
                                     </p>
@@ -85,17 +85,17 @@
                                     </p>
                                 </div>
                             </div>
-                        }
-                    }
+                        }       
+                    </div>                    
                 }
-                @{
-                    if (userId != -1)
-                    {
-                        //var replyModel = ViewBag.ReplyModel != null ? ViewBag.ReplyModel as ReplyArticleViewModel : new ReplyArticleViewModel() { ArticleId = Model.Id };
-                        @Html.Partial("_ReplyArticle", new ReplyArticleViewModel() { ArticleId = Model.Id })
-                    }
+            }
+            @{
+                if (userId != -1)
+                {
+                    //var replyModel = ViewBag.ReplyModel != null ? ViewBag.ReplyModel as ReplyArticleViewModel : new ReplyArticleViewModel() { ArticleId = Model.Id };
+                    @Html.Partial("_ReplyArticle", new ReplyArticleViewModel() { ArticleId = Model.Id })
                 }
-            </div>
+            }
         </div>
     </div>
 </div>

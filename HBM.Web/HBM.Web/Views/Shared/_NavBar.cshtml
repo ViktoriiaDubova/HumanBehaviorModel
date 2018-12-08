@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
+﻿@using Microsoft.AspNet.Identity
+
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
     <div class="container">
         <button class="navbar-toggler navbar-toggler-icon" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"></button>
         @Html.ActionLink("HBM", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
@@ -20,7 +22,7 @@
                                 <li class="nav-item">@Html.ActionLink("Admin panel", "Index", "Manage", null, new { @class = "nav-link" })</li>
                             }
                         }
-                        <li class="nav-item">@Html.ActionLink("Me", "Index", "User", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Me", "Show", "User", new { id=int.Parse(User.Identity.GetUserId()) }, new { @class = "nav-link" })</li>
                         <li class="nav-item">@Html.ActionLink("Sign out", "SignOut", "User", null, new { @class = "nav-link" })</li>
                     </ul>
                 }

@@ -26,7 +26,8 @@ namespace HBM.Web
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-theme.css",
                       "~/Content/site.css",
-                      "~/Content/PagedList.css"));
+                      "~/Content/PagedList.css",
+                      "~/Content/fontawesome/font-awesome.min.css"));
         }
     }
 }

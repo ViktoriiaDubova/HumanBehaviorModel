@@ -38,14 +38,7 @@ namespace HBM.Web.Controllers
             get => _userManager ?? (_userManager = HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>());
             private set => _userManager = value;
         }
-
-        // GET: User
-        [Authorize]
-        public ActionResult Index()
-        {
-            return HttpNotFound();
-        }
-
+                
         public ActionResult Login()
         {
             return View();
@@ -54,6 +47,23 @@ namespace HBM.Web.Controllers
         {
             return View();
         }
+        public async Task<ActionResult> Show(int id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+                return HttpNotFound("User not found");
+            UserShowViewModel model = new UserShowViewModel()
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                Role = user.UserRole.Key,
+                About = "Not yet implemented",
+                Avatar = user.Avatar?.Path
+            };
+            return View(model);
+        }
+
         [Authorize]
         public ActionResult SignOut()
         {

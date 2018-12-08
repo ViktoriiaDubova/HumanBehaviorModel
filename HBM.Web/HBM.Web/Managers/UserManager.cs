@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using HBM.Web.Contexts;
 using HBM.Web.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using HBM.Web.Contexts;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity;
+using System.Security.Cryptography;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace HBM.Web.Managers
 {
@@ -67,15 +66,24 @@ namespace HBM.Web.Managers
         public override async Task<ApplicationUser> FindAsync(string userName, string password)
         {
             var user = await UserStore.FindByNameAsync(userName);
+            if (user == null)
+                return null;
             var result = PasswordHasher.VerifyHashedPassword(user.PasswordHash, password);
             if (result == PasswordVerificationResult.Success)
                 return user;
             return null;
         }
 
+        public async Task<ApplicationUser> FindByIdAsync(int userId)
+        {
+            return await UserStore.FindByIdAsync(userId.ToString());
+        }
+
         public async Task<ApplicationUser> FindByNameOrEmailAsync(string userIdent, string password)
         {
             var user = await UserStore.FindByUsernameOrEmailAsync(userIdent);
+            if (user == null)
+                return null;
             var result = PasswordHasher.VerifyHashedPassword(user.PasswordHash, password);
             if (result == PasswordVerificationResult.Success)
                 return user;
@@ -118,6 +126,7 @@ namespace HBM.Web.Managers
         }
 
     }
+
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)

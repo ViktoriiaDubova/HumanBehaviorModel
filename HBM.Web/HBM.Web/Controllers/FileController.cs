@@ -11,8 +11,8 @@ namespace HBM.Web.Controllers
     {
         public static ReadOnlyDictionary<string, string> Paths = new ReadOnlyDictionary<string, string>(new Dictionary<string, string>
         {
-            ["images"] = "App_Data/Images/",
-            ["article_img"] = "App_Data/Images/Articles/"
+            ["images"] = "Uploads/Images/",
+            ["article_img"] = "Uploads/Images/Articles/"
         });
 
         public static void ReplaceFile(HttpPostedFileBase file, HttpServerUtilityBase server, string destination)

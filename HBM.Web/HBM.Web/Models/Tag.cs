@@ -29,6 +29,11 @@ namespace HBM.Web.Models
                 for (int i = 0; i < splited.Length; i++)
                 {
                     var str = splited[i];
+                    if (str.Length > 16 || str.Length < 2)
+                    {
+                        yield return TagCreationResult.Error($"Invalid tag length '{str}', must be: min 2, max 16");
+                        continue;
+                    }
                     if (splited.Count(el => el == str) > 1)
                     {
                         yield return TagCreationResult.Error($"Duplicate tag entry '{str}'");

@@ -11,6 +11,108 @@
     padding-top: 15px;
 }
 
+.user-info-panel {
+    background-color: rgba(75, 97, 149, 0.08);
+    color: black;
+    border-top: black solid 1px;
+    border-bottom: silver solid 1px;
+}
+
+.dimm-overlay-1 {
+    position: fixed;
+    z-index: 25;
+    background: #231f1fc4;
+    margin: 0 auto;
+    height: 100%;
+    display: none;
+    width: 90%;
+    left: 5%;
+    top: 0;
+    padding: 5%;
+    color: white;
+}
+
+.dimm-close-button {
+    float: right;
+    font-size: 30pt;
+    cursor: pointer;
+    position: absolute;
+    left: 50%;
+    top: 4%;
+    padding: 0px 20px;
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11pt;
+    z-index: 1;
+    margin-left: 15px;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    font-size: 9pt;
+    visibility: hidden;
+    min-width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 50;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+    z-index: 50;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+    z-index: 50;
+}
+
+.post-thumb {
+    width: 70%;
+    margin: 0 auto;
+}
+
+.img-preview {
+    width: 30%;
+    margin: 0 auto;
+    padding: 40px;
+}
+
+.img-preview-2 {
+    width: 30%;
+    padding: 10px;
+    margin-left: 25%;
+}
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

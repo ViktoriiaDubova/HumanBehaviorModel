@@ -41,22 +41,22 @@ namespace HBM.Web.Migrations
             CreateIndex("dbo.ApplicationUsers", "UserRoleId");
             AddForeignKey("dbo.ApplicationUsers", "UserRoleId", "dbo.UserRoles", "Id", cascadeDelete: false);
 
-            Sql("insert into UserRoles (Key) values ('admin')");
-            Sql("insert into UserRoles (Key) values ('common')");
-            Sql("insert into UserRoles (Key) values ('moderator')");
-            Sql("insert into UserRoles (Key) values ('blocked')");
-            Sql("insert into UserRoles (Key) values ('unauthorized')");
+            Sql("insert into UserRoles ([Key]) values ('admin')");
+            Sql("insert into UserRoles ([Key]) values ('common')");
+            Sql("insert into UserRoles ([Key]) values ('moderator')");
+            Sql("insert into UserRoles ([Key]) values ('blocked')");
+            Sql("insert into UserRoles ([Key]) values ('unauthorized')");
 
-            Sql("insert into Permissions (Key) values ('CreateArticle')");
-            Sql("insert into Permissions (Key) values ('ReplyArticle')");
-            Sql("insert into Permissions (Key) values ('DeleteArticle')");
-            Sql("insert into Permissions (Key) values ('EditArticle')");
-            Sql("insert into Permissions (Key) values ('DeleteArticleReply')");
-            Sql("insert into Permissions (Key) values ('BlockUser')");
-            Sql("insert into Permissions (Key) values ('BlockArticle')");
-            Sql("insert into Permissions (Key) values ('LogIn')");
-            Sql("insert into Permissions (Key) values ('AssignRole')");
-            Sql("insert into Permissions (Key) values ('DeleteOtherUserArticle')");
+            Sql("insert into Permissions ([Key]) values ('CreateArticle')");
+            Sql("insert into Permissions ([Key]) values ('ReplyArticle')");
+            Sql("insert into Permissions ([Key]) values ('DeleteArticle')");
+            Sql("insert into Permissions ([Key]) values ('EditArticle')");
+            Sql("insert into Permissions ([Key]) values ('DeleteArticleReply')");
+            Sql("insert into Permissions ([Key]) values ('BlockUser')");
+            Sql("insert into Permissions ([Key]) values ('BlockArticle')");
+            Sql("insert into Permissions ([Key]) values ('LogIn')");
+            Sql("insert into Permissions ([Key]) values ('AssignRole')");
+            Sql("insert into Permissions ([Key]) values ('DeleteOtherUserArticle')");
 
             Sql("insert into RolePermissions (Role_Id, Permission_Id) values (1,1)");
             Sql("insert into RolePermissions (Role_Id, Permission_Id) values (1,2)");

@@ -6,16 +6,13 @@
     ViewBag.Title = "Articles";
     
     int userId = User.Identity.IsAuthenticated ? int.Parse(User.Identity.GetUserId()) : -1;
-    if (userId != -1 && !User.IsInRole("banned"))
-    {
-        <p>@Html.ActionLink("Create new", "Create", "Article", null, new { @class = "btn btn-primary btn-lg" })</p>
-    }
+    
     var sortOrder = ViewBag.SortOrder;
     string search = ViewBag.Search as string;
     var list = new SelectList(ArticleController.Ordering, "Value", "Text", sortOrder);
 }
 
-<div class="row align-content-center">
+<div class="row d-flex justify-content-center">
 @{
     <div class="col-md-8">
         @using (Html.BeginForm("Index", "Article", new { page = Model.PageNumber }, FormMethod.Get, new { @class = "form-inline mb-4", id = "sortForm", role = "form" }))
@@ -25,6 +22,11 @@
 
             @Html.TextBox("search", search, new { @class = "form-control float-left" })
             <input type="submit" value="Search" class="form-control" />
+
+            if (userId != -1 && !User.IsInRole("banned"))
+            {
+                @Html.ActionLink("Create new", "Create", "Article", null, new { @class = "form-control ml-1 btn-primary" })
+            }
         }
 
         @foreach (var article in Model)
@@ -71,7 +73,7 @@
                 </div>
                 <div class="social-share">
                     <span class="social-share-title float-left text-capitalize">
-                        Posted by <b>@article.User.UserName</b> on @article.DatePost
+                        Posted by <a href="@Url.Action("Show", "User", new { id=article.UserId })" class="card-link">@article.User.UserName</a> on @article.DatePost
                         @{
                             if (article.DateEdited != null)
                             {

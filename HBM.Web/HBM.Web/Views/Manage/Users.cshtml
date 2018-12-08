@@ -23,7 +23,7 @@
                 case "unauthorized": rowStyle = "table-warning"; break;
             }
             <tr class="@rowStyle">
-                <td>@user.UserName</td>
+                <td><a href="@Url.Action("Show", "User", new { id=user.Id })" class="card-link" style="color:black">@user.UserName</a></td>
                 <td>@user.Email</td>
                 <td>@Html.ActionLink(role, "AssignRole", new { id = user.Id }, new { style = "color:black;" })</td>
                 <td>@user.DateRegistered</td>
