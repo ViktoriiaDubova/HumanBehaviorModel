@@ -54,19 +54,24 @@
                     }
                     <div class="text-center text-uppercase pull-center">
                         <div class='tooltip'>
-                            0
+                            @Model.Rating
                             <i class='fa fa-star'></i>
                             <span class="tooltiptext">Rating</span>
                         </div>
                         <div class='tooltip'>
-                            0
-                            <i class='fa fa-apple'></i>
+                            @Model.Articles
+                            <i class='fa fa-coffee'></i>
                             <span class="tooltiptext">Articles posted</span>
                         </div>
                         <div class='tooltip'>
-                            0
-                            <i class='fa fa-coffee'></i>
+                            @Model.Comments
+                            <i class='fa fa-comment'></i>
                             <span class="tooltiptext">Comments written</span>
+                        </div>
+                        <div class='tooltip'>
+                            @Model.Banned
+                            <i class='fa fa-lock'></i>
+                            <span class="tooltiptext">Times banned</span>
                         </div>
                     </div>
                 </div>
@@ -82,7 +87,11 @@
                 <i class='fa fa-envelope'></i> @Model.Email
             </p>
             <p class='pull-left'>
-                <i class='fa fa-comment'></i> @Model.About
+                <i class='fa fa-comment'></i> 
+                @{
+                    var about = Model.About ?? "...";
+                    <span>@about</span>
+                }
             </p>
         </div>
     </div>

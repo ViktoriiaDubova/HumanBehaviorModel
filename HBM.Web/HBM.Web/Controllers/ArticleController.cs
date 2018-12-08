@@ -83,6 +83,13 @@ namespace HBM.Web.Controllers
             var article = await db.Articles.FindAsync(id);
             if (article == null)
                 return HttpNotFound("Article not found!");
+            var user = await db.Users.FindAsync(int.Parse(User.Identity.GetUserId()));
+            if (user != null)
+            {
+                var activity = FindOrAddUserActivity(user, article);
+                activity.Viewed = true;
+                await db.SaveChangesAsync();
+            }
             return View(article);
         }
         
@@ -133,12 +140,13 @@ namespace HBM.Web.Controllers
                     await db.SaveChangesAsync();
                 }
 
+                var user = await db.Users.FindAsync(int.Parse(User.Identity.GetUserId()));
                 Article article = new Article()
                 {
                     Header = model.Header,
                     Description = model.Description,
                     Content = model.Content,
-                    UserId = int.Parse(User.Identity.GetUserId()),
+                    UserId = user.Id,
                     DatePost = DateTime.UtcNow
                 };
                 if (img != null)
@@ -147,6 +155,10 @@ namespace HBM.Web.Controllers
                 var tagKeys = tagCreationResults.Select(r => r.Value);
                 article.Tags = LoadTags(tagKeys).ToList();
                 db.Articles.Add(article);
+
+                user.UserStats.ArticlesPosted += 1;
+                user.UserStats.Rating += UserStats.RatingPerArticle;
+
                 await db.SaveChangesAsync();
 
                 return RedirectToAction("Index");
@@ -180,10 +192,17 @@ namespace HBM.Web.Controllers
                 User = user
             };
             article.Comments.Add(comment);
+
+            user.UserStats.CommentsWritten += 1;
+            user.UserStats.Rating += UserStats.RatingPerComment;
+
             await db.SaveChangesAsync();
 
             return RedirectToAction("Show", new { id= model.ArticleId });
         }
+
+        public async Task<ActionResult> VoteUp(int id) => await Vote(id, 1);
+        public async Task<ActionResult> VoteDown(int id) => await Vote(id, -1);
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -255,6 +274,27 @@ namespace HBM.Web.Controllers
             base.Dispose(disposing);
         }
 
+        private async Task<ActionResult> Vote(int id, int value)
+        {
+            if (value != 1 && value != -1)
+                throw new Exception("Unexpected voting behavior occured");
+            var article = await db.Articles.FindAsync(id);
+            if (article == null)
+                return HttpNotFound("The requested article is not found");
+            var user = GetCurrentUser();
+            if (user.Id == article.UserId)
+                return RedirectToAction("Show", new { id });
+
+            var activity = FindOrAddUserActivity(user, article);
+            if (value == -1 && activity.Vote > -1 || value == 1 && activity.Vote < 1)
+            {
+                activity.Vote += value;
+                article.User.UserStats.Rating += UserStats.RatingPerArticleVote * value;
+            }
+            await db.SaveChangesAsync();
+            return RedirectToAction("Show", new { id });
+        }
+
         private bool HasPermission(PermissionKey key)
         {
             var user = GetCurrentUser();
@@ -263,6 +303,21 @@ namespace HBM.Web.Controllers
         private ApplicationUser GetCurrentUser() => GetUser(User.Identity?.GetUserId());
         private ApplicationUser GetUser(int id) => db.Users.Find(id);
         private ApplicationUser GetUser(string id) => id != null ? GetUser(int.Parse(id)) : null;
+        private UserArticleActivity FindOrAddUserActivity(ApplicationUser user, Article article)
+        {
+            var activity = db.UserArticleActivities.FirstOrDefault(a => a.UserId == user.Id && a.ArticleId == article.Id);
+            if (activity == null)
+            {
+                activity = new UserArticleActivity()
+                {
+                    Article = article,
+                    User = user,
+                    Vote = 0
+                };
+                db.UserArticleActivities.Add(activity);
+            }
+            return activity;
+        }
         private IEnumerable<Tag> LoadTags(IEnumerable<string> keys)
         {
             foreach (var key in keys)

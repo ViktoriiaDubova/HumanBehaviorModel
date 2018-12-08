@@ -15,6 +15,8 @@ namespace HBM.Web.Contexts
         public DbSet<Tag> Tags { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
+        public DbSet<UserStats> UserStats { get; set; }
+        public DbSet<UserArticleActivity> UserArticleActivities { get; set; }
 
         public ApplicationDbContext() : base("MainDB")
         {

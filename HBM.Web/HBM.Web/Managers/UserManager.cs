@@ -26,10 +26,13 @@ namespace HBM.Web.Managers
     {
         private ApplicationUserStore UserStore { get; }
 
+        public UserDbContext UserDbContext { get; }
+
         private ApplicationUserManager (ApplicationUserStore store) : base(store)
         {
             PasswordHasher = new InternalPasswordHasher();
             UserStore = store;
+            UserDbContext = store.DbContext;
         }
         
         public async Task<UserCreationResult> CreateUser(string username, string email, string password)
@@ -39,7 +42,7 @@ namespace HBM.Web.Managers
             if (await UserStore.FindByEmailAsync(email) != null)
                 return UserCreationResult.UserEmailDuplicate;
 
-            UserRole role = UserStore.DbContext.UserRoles.FirstOrDefault(r => r.Key == UserRoleKey.Unauthorized.ToString().ToLower());
+            UserRole role = UserStore.DbContext.UserRoles.FirstOrDefault(r => r.Key == UserRoleKey.Unauthorized.AsString());
             ApplicationUser user = new ApplicationUser()
             {
                 UserName = username,

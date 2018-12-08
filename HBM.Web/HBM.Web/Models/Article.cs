@@ -32,6 +32,7 @@ namespace HBM.Web.Models
         public virtual ApplicationUser User { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
+        public virtual ICollection<UserArticleActivity> UserArticleActivities { get; set; }
 
         public void LoadFrom(ArticleEditViewModel model)
         {

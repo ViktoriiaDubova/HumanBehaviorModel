@@ -211,6 +211,14 @@
     <Compile Include="Migrations\201812051801547_Unknown.Designer.cs">
       <DependentUpon>201812051801547_Unknown.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812081701118_AddUserStats.cs" />
+    <Compile Include="Migrations\201812081701118_AddUserStats.Designer.cs">
+      <DependentUpon>201812081701118_AddUserStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812081759381_UpdateUserTable.cs" />
+    <Compile Include="Migrations\201812081759381_UpdateUserTable.Designer.cs">
+      <DependentUpon>201812081759381_UpdateUserTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Article.cs" />
@@ -539,7 +547,6 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Article\Create.cshtml" />
-    <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
@@ -597,6 +604,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812051801547_Unknown.resx">
       <DependentUpon>201812051801547_Unknown.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812081701118_AddUserStats.resx">
+      <DependentUpon>201812081701118_AddUserStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812081759381_UpdateUserTable.resx">
+      <DependentUpon>201812081759381_UpdateUserTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

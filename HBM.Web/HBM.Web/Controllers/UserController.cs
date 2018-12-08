@@ -58,8 +58,12 @@ namespace HBM.Web.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 Role = user.UserRole.Key,
-                About = "Not yet implemented",
-                Avatar = user.Avatar?.Path
+                About = user.About,
+                Avatar = user.Avatar?.Path,
+                Rating = user.UserStats.Rating,
+                Articles = user.UserStats.ArticlesPosted,
+                Comments = user.UserStats.CommentsWritten,
+                Banned = user.UserStats.TimesBanned
             };
             return View(model);
         }
@@ -117,7 +121,16 @@ namespace HBM.Web.Controllers
             {
                 var result = await UserManager.CreateUser(model.Username, model.Email, model.Password);
                 if (result == UserCreationResult.Created)
+                {
+                    var user = await UserManager.FindAsync(model.Username, model.Password);
+                    var stats = new UserStats()
+                    {
+                        User = user
+                    };
+                    user.UserStats = stats;
+                    await UserManager.UserDbContext.SaveChangesAsync();
                     return View("Login");
+                }
                 if (result.HasFlag(UserCreationResult.UserEmailDuplicate))
                     ModelState.AddModelError("Email", "User with such an email is already exists");
                 if (result.HasFlag(UserCreationResult.UsernameDuplicate))

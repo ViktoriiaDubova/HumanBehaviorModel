@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using HBM.Web.Contexts;
 using HBM.Web.Filters;
+using HBM.Web.Models;
 using HBM.Web.ViewModels;
 using PagedList;
 
@@ -84,6 +85,11 @@ namespace HBM.Web.Controllers
             {
                 ModelState.AddModelError("Roles", "No role was selected or invalid role ID sent");
                 return View(model);
+            }
+            if (role.Key == UserRoleKey.Blocked.AsString() && user.UserRole.Key != role.Key)
+            {
+                user.UserStats.Rating += UserStats.RatingPerBan;
+                user.UserStats.TimesBanned += 1;
             }
             user.UserRole = role;
             await db.SaveChangesAsync();

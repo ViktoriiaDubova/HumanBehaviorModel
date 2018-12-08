@@ -53,6 +53,31 @@
                                 }
                             }
                         </span>
+                        <ul class="text-center float-right">
+                            <li class='tooltip'>
+                                @Model.UserArticleActivities.Sum(a => a.Viewed ? 1 : 0)
+                                <i class='fa fa-eye'></i>
+                                <span class="tooltiptext">Times viewed</span>
+                            </li>
+                            <li class='tooltip'>
+                                @Model.Comments.Count
+                                <i class='fa fa-comment'></i>
+                                <span class="tooltiptext">Times commented</span>
+                            </li>
+                            <li class='tooltip'>
+                                @Model.UserArticleActivities.Sum(a => a.Vote)
+                                <i class='fa fa-star'></i>
+                                <span class="tooltiptext">Rating</span>
+                            </li>
+                            <li class='tooltip'>
+                                <a href="@Url.Action("VoteUp", "Article", new { id=Model.Id})"><i class='fa fa-thumbs-up'></i></a>
+                                <span class="tooltiptext">Upvote</span>
+                            </li>
+                            <li class='tooltip'>
+                                <a href="@Url.Action("VoteDown", "Article", new { id=Model.Id})"><i class='fa fa-thumbs-down'></i></a>
+                                <span class="tooltiptext">Downvote</span>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </article>

@@ -1,6 +1,7 @@
 ﻿@model PagedList.IPagedList<HBM.Web.Models.Article>
 @using PagedList.Mvc;
 @using Microsoft.AspNet.Identity;
+@using HBM.Web.Models
 @using HBM.Web.Controllers;
 @{
     ViewBag.Title = "Articles";
@@ -23,7 +24,7 @@
             @Html.TextBox("search", search, new { @class = "form-control float-left" })
             <input type="submit" value="Search" class="form-control" />
 
-            if (userId != -1 && !User.IsInRole("banned"))
+            if (userId != -1 && !User.IsInRole(UserRoleKey.Blocked.AsString()))
             {
                 @Html.ActionLink("Create new", "Create", "Article", null, new { @class = "form-control ml-1 btn-primary" })
             }
@@ -82,7 +83,18 @@
                             }
                         }
                     </span>
-                    <ul class="text-center float-right"></ul>
+                    <ul class="text-center float-right pr-3">
+                        <li class='tooltip'>
+                            @article.UserArticleActivities.Sum(a => a.Viewed ? 1 : 0)
+                            <i class='fa fa-eye'></i>
+                            <span class="tooltiptext">Times viewed</span>
+                        </li>
+                        <li class='tooltip'>
+                            @article.Comments.Count
+                            <i class='fa fa-comment'></i>
+                            <span class="tooltiptext">Times commented</span>
+                        </li>
+                    </ul>
                 </div>
             </article>
         }
