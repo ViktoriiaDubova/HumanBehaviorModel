@@ -52,12 +52,6 @@
         </div>
         <div class='col-md-8 user-info-panel'>
             <div class="social-share p-1" style='background:rgb(42, 46, 84); color:white'>
-                @if (userId == Model.Id)
-                {
-                    <a href="@Url.Action("Edit", "User")" class="float-right text-white">
-                        <i class="fa fa-cog fa-2x"></i>
-                    </a>
-                }
                 <h3 class='widget-title text-center'>
                     @if (Model.FullName != null)
                     {

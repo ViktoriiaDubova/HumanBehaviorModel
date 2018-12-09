@@ -1,0 +1,15 @@
+﻿@model HBM.Web.ViewModels.PermissionCreateViewModel
+
+@using (Html.BeginForm("CreatePermission", "Manage", FormMethod.Post, new { role = "form", @class = "form-inline" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <br />
+
+    @Html.LabelFor(m => m.Key)
+    <div class="form-group col-md-6">
+        @Html.TextBoxFor(m => m.Key, new { @class="form-control" })
+        @Html.ValidationMessageFor(m => m.Key, "", new { @class = "text-danger" })
+        <input type="submit" value="Create" class="btn btn-outline-primary" />
+    </div>
+}

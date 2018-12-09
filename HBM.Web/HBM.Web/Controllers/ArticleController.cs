@@ -300,6 +300,11 @@ namespace HBM.Web.Controllers
             var user = GetCurrentUser();
             return user != null && user.HasPermission(key);
         }
+        private bool HasPermission(string key)
+        {
+            var user = GetCurrentUser();
+            return user != null && user.HasPermission(key);
+        }
         private ApplicationUser GetCurrentUser() => GetUser(User.Identity?.GetUserId());
         private ApplicationUser GetUser(int id) => db.Users.Find(id);
         private ApplicationUser GetUser(string id) => id != null ? GetUser(int.Parse(id)) : null;

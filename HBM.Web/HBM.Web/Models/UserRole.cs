@@ -18,6 +18,8 @@ namespace HBM.Web.Models
         public int Id { get; set; }
         [Required]
         public string Key { get; set; }
+        [Required]
+        public bool IsLocked { get; set; }
 
         public virtual ICollection<Permission> Permissions { get; set; }
 

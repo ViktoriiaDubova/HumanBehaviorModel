@@ -32,4 +32,31 @@ namespace HBM.Web.ViewModels
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImageFile { get; set; }
     }
+
+    public class LoginViewModel
+    {
+        [Required, StringLength(32, MinimumLength = 3)]
+        public string UserIdent { get; set; }
+
+        [Required(ErrorMessage = "Please, enter your password")]
+        public string Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+
+    public class RegisterViewModel
+    {
+        [Required, StringLength(32, MinimumLength = 3)]
+        public string Username { get; set; }
+
+        [EmailAddress, Required]
+        [StringLength(32, MinimumLength = 3)]
+        public string Email { get; set; }
+
+        [Required, Compare("PasswordConfirmation", ErrorMessage = "Please, confirm your password")]
+        public string Password { get; set; }
+
+        [Required]
+        public string PasswordConfirmation { get; set; }
+    }
 }

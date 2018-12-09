@@ -7,7 +7,7 @@
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
-            <th>Username</th><th>Email</th><th>Role</th><th>Date registered</th>
+            <th>Username</th><th>Email</th><th>Role</th><th>Date registered</th><th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -25,8 +25,18 @@
             <tr class="@rowStyle">
                 <td><a href="@Url.Action("Show", "User", new { id=user.Id })" class="card-link" style="color:black">@user.UserName</a></td>
                 <td>@user.Email</td>
-                <td>@Html.ActionLink(role, "AssignRole", new { id = user.Id }, new { style = "color:black;" })</td>
+                <td>@Html.ActionLink(role, "AssignPermissions", new { roleId = user.UserRoleId }, new { style = "color:black;" })</td>
                 <td>@user.DateRegistered</td>
+                <td>
+                    <a class="btn btn-outline-success tooltip" href="@Url.Action("AssignRole", "Manage", new { id=user.Id })">
+                        <i class='fa fa-level-up'></i>
+                        <span class="tooltiptext">Assign role</span>
+                    </a>
+                    <a class="btn btn-outline-danger tooltip" href="@Url.Action("DeleteUser", "Manage", new { id=user.Id })">
+                        <i class='fa fa-unlink'></i>
+                        <span class="tooltiptext">Delete</span>
+                    </a>
+                </td>
             </tr>
         }
     </tbody>

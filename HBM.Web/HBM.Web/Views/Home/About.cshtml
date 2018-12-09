@@ -1,7 +1,12 @@
 ﻿@{
     ViewBag.Title = "About";
+    if (User.Identity.IsAuthenticated)
+    {
+        <a href="@Url.Action("Edit", "Home", new { page="About" })" class="float-right btn-outline-secondary">
+            <i class="fa fa-cog fa-2x"></i>
+        </a>
+    }
 }
 <h2>@ViewBag.Title</h2>
 
-<p>The site is created under MIT license. You can see code on <a href="https://github.com/Vardir/HumanBehaviorModel">GitHub</a>.</p>
-<p>For any question, please, <a href="http://mistyfalcon.azurewebsites.net/Home/Contact">contact us</a></p>
+@RenderPage("Content/About.cshtml")

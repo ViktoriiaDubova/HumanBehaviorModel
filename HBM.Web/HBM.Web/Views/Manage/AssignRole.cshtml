@@ -10,6 +10,7 @@
     @using (Html.BeginForm("AssignRole", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "role" }))
     {
         @Html.ValidationSummary(true)
+        @Html.AntiForgeryToken()
         <br />
         @Html.HiddenFor(m => m.UserId)
         @Html.LabelFor(m => m.UserName, Model.UserName + " is ", null)

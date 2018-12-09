@@ -1,14 +1,12 @@
 ﻿@{
     ViewBag.Title = "Contact";
+    if (User.Identity.IsAuthenticated)
+    {
+        <a href="@Url.Action("Edit", "Home", new { page="Contact" })" class="float-right btn-outline-secondary">
+            <i class="fa fa-cog fa-2x"></i>
+        </a>
+    }
 }
 <h2>Contact us</h2>
 
-<address>
-    MistyFalcon & Co<br />
-    Ukraine, Mykolaiv<br />
-</address>
-
-<address>
-    <strong>Support:</strong>   <a href="mailto:andriy.satura@gmail.com">andriy.satura@gmail.com</a><br />
-    <strong>Info:</strong> <a href="mailto:pandushechka@gmail.com">pandushechka@gmail.com</a>
-</address>
+@RenderPage("Content/Contact.cshtml")    

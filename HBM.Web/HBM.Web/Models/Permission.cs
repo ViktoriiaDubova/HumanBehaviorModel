@@ -14,6 +14,7 @@ namespace HBM.Web.Models
         LogIn,
         AssignRole,
         DeleteOtherUserArticle,
+        EditHomePages
     }
 
     public class Permission
@@ -22,5 +23,7 @@ namespace HBM.Web.Models
         public int Id { get; set; }
         [Required]
         public string Key { get; set; }
+        [Required]
+        public bool IsLocked { get; set; }
     }
 }
