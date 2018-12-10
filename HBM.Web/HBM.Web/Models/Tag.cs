@@ -14,7 +14,7 @@ namespace HBM.Web.Models
         [Key]
         public int Id { get; set; }
         [Index("IX_TagKey", IsUnique = true)]
-        [Required, StringLength(16, MinimumLength = 2)]
+        [Required, StringLength(16, MinimumLength = 2), RegularExpression(Pattern, ErrorMessage = "Only letters, numbers and underscores are valid")]
         public string Key { get; set; }
 
         public virtual ICollection<Article> Articles { get; set; }

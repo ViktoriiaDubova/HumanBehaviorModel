@@ -18,10 +18,13 @@ namespace HBM.Web.Controllers
 
         public static void ReplaceFile(HttpPostedFileBase file, HttpServerUtilityBase server, string destination)
         {
-            var directory = Path.GetDirectoryName(destination);
+            var path = server.MapPath(destination);
+            var directory = Path.GetDirectoryName(path);
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory);
-            file.SaveAs(server.MapPath(destination));
+            if (File.Exists(path))
+                File.Delete(path);
+            file.SaveAs(path);
         }
         public static void RemoveFile(HttpServerUtilityBase server, string fileName)
         {

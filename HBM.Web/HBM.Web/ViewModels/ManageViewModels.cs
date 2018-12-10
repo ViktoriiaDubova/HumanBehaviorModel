@@ -34,4 +34,13 @@ namespace HBM.Web.ViewModels
         public IEnumerable<SelectListItem> Permissions { get; set; }
         public IEnumerable<int> SelectedPermissions { get; set; }
     }
+
+    public class TagEditViewModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(16, MinimumLength = 2), RegularExpression(Tag.Pattern, ErrorMessage = "Only letters, numbers and underscores are valid")]
+        public string Key { get; set; }
+    }
 }

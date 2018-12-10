@@ -26,9 +26,48 @@ namespace HBM.Web.Controllers
             var list = db.Users.ToList().ToPagedList(pageNumber, EntitiesPerPage);
             return View(list);
         }
+
         public ActionResult Tags()
         {
             return View(db.Tags.ToList());
+        }
+        public async Task<ActionResult> EditTag(int id)
+        {
+            var tag = await db.Tags.FindAsync(id);
+            if (tag == null)
+                return HttpNotFound($"Tag with ID {id} not found");
+
+            return View(new TagEditViewModel() { Id=id, Key=tag.Key });
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> EditTag(TagEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+            var tag = await db.Tags.FindAsync(model.Id);
+            if (tag == null)
+            {
+                ModelState.AddModelError("", "The ID was invalid");
+                return View(model);
+            }
+            if (db.Tags.FirstOrDefault(t => t.Key == model.Key) != null)
+            {
+                ModelState.AddModelError("Key", "Duplicate tag entry");
+                return View(model);
+            }
+            tag.Key = model.Key;
+            await db.SaveChangesAsync();
+            return RedirectToAction("Tags");
+        }
+        public async Task<ActionResult> DeleteTag(int id)
+        {
+            var tag = await db.Tags.FindAsync(id);
+            if (tag == null)
+                return HttpNotFound($"Tag with ID {id} does not exist");
+            db.Tags.Remove(tag);
+            await db.SaveChangesAsync();
+            return RedirectToAction("Tags");
         }
 
         #region Permissions

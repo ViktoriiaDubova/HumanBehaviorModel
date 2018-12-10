@@ -2,7 +2,9 @@
 @using HBM.Web.Models
 @model System.Collections.Generic.IEnumerable<UserRole>
 @{
-    ViewBag.Title = "Roles";
+                /**/
+
+                ViewBag.Title = "Roles";
 }
 
 <h2>Roles</h2>
@@ -30,7 +32,7 @@
                     </a>
                     @if (!role.IsLocked)
                     {
-                        <a class="btn btn-outline-danger tooltip" href="@Url.Action("DeleteRole", "Manage", new { id = role.Id })">
+                        <a class="btn btn-outline-danger tooltip del" href="@Url.Action("DeleteRole", "Manage", new { id = role.Id })">
                             <i class='fa fa-unlink'></i>
                             <span class="tooltiptext">Delete</span>
                         </a>
@@ -42,3 +44,12 @@
 </table>
 
 @Html.Partial("_CreateRole", new RoleCreateViewModel())
+
+@section scripts
+{
+    <script>
+    $("body").on("click", ".del", function (e) {
+        return confirm("Do you want to delete this role?");
+    });
+    </script>
+}

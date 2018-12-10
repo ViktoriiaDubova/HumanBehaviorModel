@@ -36,8 +36,11 @@
                 <div class="post-thumb">
                     <a href="@Url.Action("Show", new { id=article.Id })">
                         @{
-                            var img = article.Image?.Path ?? "~/Content/img/no-image.png";
-                            img = Url.Content(img);
+                            var img = article.Image?.Path;
+                            if (img != null)
+                            {
+                                img = Url.Content(img);
+                            }
                         }
                         <img class="img-preview" src="@img" alt="">
                     </a>
@@ -84,6 +87,11 @@
                         }
                     </span>
                     <ul class="text-center float-right pr-3">
+                        <li class='tooltip'>
+                            @article.UserArticleActivities.Sum(a => a.Vote)
+                            <i class='fa fa-star'></i>
+                            <span class="tooltiptext">Rating</span>
+                        </li>
                         <li class='tooltip'>
                             @article.UserArticleActivities.Sum(a => a.Viewed ? 1 : 0)
                             <i class='fa fa-eye'></i>

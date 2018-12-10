@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using PagedList;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web.Mvc;
+using HBM.Web.Models;
 using HBM.Web.Contexts;
 using HBM.Web.Extensions;
-using HBM.Web.Models;
 using HBM.Web.ViewModels;
+using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using PagedList;
+using System.Collections.Generic;
 
 namespace HBM.Web.Controllers
 {
@@ -22,7 +22,11 @@ namespace HBM.Web.Controllers
             new { Text = "by title", Value = "header"},
             new { Text = "by title desc", Value = "header_desc"},
             new { Text = "recent", Value = "date_desc" },
-            new { Text = "older", Value = "date" }
+            new { Text = "older", Value = "date" },
+            new { Text = "popular", Value = "rating_desc" },
+            new { Text = "most commented", Value = "comments" },
+            new { Text = "by user", Value = "username" },
+            new { Text = "by user desc", Value = "username_desc" },
         };
 
         [AllowAnonymous]
@@ -44,6 +48,18 @@ namespace HBM.Web.Controllers
                     break;
                 case "date":
                     articles = articles.OrderBy(a => a.DatePost);
+                    break;
+                case "rating_desc":
+                    articles = articles.OrderByDescending(a => a.UserArticleActivities.Sum(act => act.Vote));
+                    break;
+                case "comments":
+                    articles = articles.OrderByDescending(a => a.Comments.Count);
+                    break;
+                case "username":
+                    articles = articles.OrderBy(a => a.User.UserName);
+                    break;
+                case "username_desc":
+                    articles = articles.OrderByDescending(a => a.User.UserName);
                     break;
                 case "date_desc":
                 default:
@@ -83,12 +99,15 @@ namespace HBM.Web.Controllers
             var article = await db.Articles.FindAsync(id);
             if (article == null)
                 return HttpNotFound("Article not found!");
-            var user = await db.Users.FindAsync(int.Parse(User.Identity.GetUserId()));
-            if (user != null)
+            if (User.Identity.IsAuthenticated)
             {
-                var activity = FindOrAddUserActivity(user, article);
-                activity.Viewed = true;
-                await db.SaveChangesAsync();
+                var user = await db.Users.FindAsync(int.Parse(User.Identity.GetUserId()));
+                if (user != null)
+                {
+                    var activity = FindOrAddUserActivity(user, article);
+                    activity.Viewed = true;
+                    await db.SaveChangesAsync();
+                }
             }
             return View(article);
         }
@@ -263,6 +282,9 @@ namespace HBM.Web.Controllers
                 return HttpNotFound("Article to delete not found");
             if (article.ImageId != null)
                 FileController.RemoveFile(Server, article.Image.Path);
+
+            db.Comments.RemoveRange(article.Comments);
+            db.UserArticleActivities.RemoveRange(article.UserArticleActivities);            
             db.Articles.Remove(article);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");

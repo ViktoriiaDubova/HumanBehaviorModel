@@ -585,6 +585,8 @@
     <Content Include="Views\Manage\_CreateRole.cshtml" />
     <Content Include="Views\Manage\AssignPermissions.cshtml" />
     <Content Include="Views\Home\PageEdit.cshtml" />
+    <Content Include="Views\Manage\Tags.cshtml" />
+    <Content Include="Views\Manage\EditTag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Content\img\" />

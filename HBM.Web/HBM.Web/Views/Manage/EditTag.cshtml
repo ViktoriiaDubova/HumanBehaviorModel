@@ -1,0 +1,20 @@
+﻿@model HBM.Web.ViewModels.TagEditViewModel
+
+@using (Html.BeginForm("EditTag", "Manage", FormMethod.Post, new { role = "form", @class = "form-hotizontal" }))
+{
+    @Html.ValidationSummary(false)
+    @Html.AntiForgeryToken()
+    <br />
+
+    @Html.LabelFor(m => m.Key)
+    <div class="form-group col-md-6">
+        @Html.TextBoxFor(m => m.Key, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Key, "", new { @class = "text-danger" })
+    </div>
+
+    <div class="form-group">
+        <div class="mt-4 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-primary btn-block" />
+        </div>
+    </div>
+}
